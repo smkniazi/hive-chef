@@ -1,0 +1,6 @@
+dependencies: 
+  - recipe: hive::install
+  - recipe: hive::default
+    global:  
+      - hops::dn
+      - hops::nm
