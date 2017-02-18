@@ -17,8 +17,17 @@ default.hive2.keystore_password       = "changeit"
 default.hive2.mysql_user              = "hive"
 default.hive2.mysql_password          = "hive"
 
-default.hive2.server2.pid_file        = "/tmp/hive.pid"
-default.hive2.metastore.pid_file      = "/tmp/hive.pid"
+default.hive2.server2.pid_file        = "/tmp/hiveserver2.pid"
+default.hive2.metastore.pid_file      = "/tmp/hivemetastore.pid"
 default.hive2.metastore.log           = "#{node.hive2.base_dir}/hive-metastore.log"
 default.hive2.server2.log              = "#{node.hive2.base_dir}/hive-server2.log"
 default.hive2.systemd                 = "true"
+
+
+default.tez.user                    = "tez"
+default.tez.group                   = node.apache_hadoop.group
+default.tez.version                 = "0.8.4"
+default.tez.url                     = "#{node.download_url}/apache-tez-#{node.tez.version}-bin.tar.gz"
+default.tez.dir                     = "/srv"
+default.tez.home                    =  node.tez.dir + "/apache-tez-" + node.tez.version + "-bin"
+default.tez.base_dir                =  node.tez.dir + "/apache-tez" 

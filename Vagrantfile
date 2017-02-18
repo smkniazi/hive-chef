@@ -115,6 +115,14 @@ Vagrant.configure("2") do |c|
    	  	       "private_ips" => ["10.0.2.15"]
 	       },
      },
+     "tez" => {
+          "user" => "glassfish",
+          "group" => "glassfish",
+          "dir" => "/srv/hops",
+	  "default" =>      { 
+   	  	       "private_ips" => ["10.0.2.15"]
+	       },
+     },
      "hive2" => {
           "user" => "glassfish",
           "group" => "glassfish",

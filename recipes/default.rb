@@ -248,6 +248,19 @@ if node.kagent.enabled == "true"
 end
 
 
+template "#{node.tez.base_dir}/conf/tez-site.xml" do
+  source "hive-site.xml.erb"
+  owner node.hive2.user
+  group node.hive2.group
+  mode 0655
+  variables({ 
+              :private_ip => my_ip,
+              :nn_endpoint => nn_endpoint,
+              :zk_endpoints => zk_endpoints        
+            })
+end
+
+
 
 
 #CREATE EXTERNAL TABLE wlslog(time_stamp STRING, category STRING, type STRING, servername STRING, code STRING, msg STRING)

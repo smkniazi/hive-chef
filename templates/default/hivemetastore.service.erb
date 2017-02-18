@@ -1,0 +1,16 @@
+[Unit]
+Description = Hive metaserver
+After = syslog.target network.target remote-fs.target
+
+[Service]
+User = <%= node.hive2.user %>
+
+PIDFile = <%= node.hive2.metastore.pid_file %>
+ExecStart = <%= node.hive2.base_dir %>/bin/start-hivemetastore.sh
+ExecStop = <%= node.hive2.base_dir %>/bin/stop-hivemetastore.sh
+LimitNOFILE = 20000
+
+Type = forking
+
+[Install]
+WantedBy = multi-user.target
