@@ -44,7 +44,7 @@ for d in tmp_dirs
 end
 
 file "#{node.hive2.base_dir}/conf/hive-site.xml" do
- action :delete
+  action :delete
 end
 
 template "#{node.hive2.base_dir}/conf/hive-site.xml" do
@@ -53,15 +53,15 @@ template "#{node.hive2.base_dir}/conf/hive-site.xml" do
   group node.hive2.group
   mode 0655
   variables({ 
-        :private_ip => my_ip,
-        :nn_endpoint => nn_endpoint,
-        :zk_endpoints => zk_endpoints        
-           })
+              :private_ip => my_ip,
+              :nn_endpoint => nn_endpoint,
+              :zk_endpoints => zk_endpoints        
+            })
 end
 
 
 file "#{node.hive2.base_dir}/conf/hive-env.sh.erb" do
- action :delete
+  action :delete
 end
 
 template "#{node.hive2.base_dir}/conf/hive-env.sh" do
@@ -71,29 +71,29 @@ template "#{node.hive2.base_dir}/conf/hive-env.sh" do
   mode 0655
 end
 
-template "#{node.hive2.base_dir}/bin/start-hive-metastore.sh" do
-  source "start-hive-metastore.sh.erb"
+template "#{node.hive2.base_dir}/bin/start-hivemetastore.sh" do
+  source "start-hivemetastore.sh.erb"
   owner node.hive2.user
   group node.hive2.group
   mode 0751
 end
 
-template "#{node.hive2.base_dir}/bin/stop-hive-metastore.sh" do
-  source "stop-hive-metastore.sh.erb"
+template "#{node.hive2.base_dir}/bin/stop-hivemetastore.sh" do
+  source "stop-hivemetastore.sh.erb"
   owner node.hive2.user
   group node.hive2.group
   mode 0751
 end
 
-template "#{node.hive2.base_dir}/bin/start-hive-server2.sh" do
-  source "start-hive-server2.sh.erb"
+template "#{node.hive2.base_dir}/bin/start-hiveserver2.sh" do
+  source "start-hiveserver2.sh.erb"
   owner node.hive2.user
   group node.hive2.group
   mode 0751
 end
 
-template "#{node.hive2.base_dir}/bin/stop-hive-server2.sh" do
-  source "stop-hive-server2.sh.erb"
+template "#{node.hive2.base_dir}/bin/stop-hiveserver2.sh" do
+  source "stop-hiveserver2.sh.erb"
   owner node.hive2.user
   group node.hive2.group
   mode 0751
@@ -102,9 +102,9 @@ end
 
 hive_downloaded = node.hive2.base_dir + "/.hive_setup"
 bash 'setup-hive' do
-        user "root"
-        group node.hive2.group
-        code <<-EOH
+  user "root"
+  group node.hive2.group
+  code <<-EOH
         #{node.ndb.scripts_dir}/mysql-client.sh -e \"CREATE USER '#{node.hive2.mysql_user}'@'localhost' IDENTIFIED BY '#{node.hive2.mysql_password}'\"
         #{node.ndb.scripts_dir}/mysql-client.sh -e \"REVOKE ALL PRIVILEGES, GRANT OPTION FROM '#{node.hive2.mysql_user}'@'localhost'\"
         #{node.ndb.scripts_dir}/mysql-client.sh -e \"CREATE DATABASE IF NOT EXISTS metastore CHARACTER SET latin1\"
@@ -113,7 +113,7 @@ bash 'setup-hive' do
         #{node.ndb.scripts_dir}/mysql-client.sh -e \"FLUSH PRIVILEGES\"
 #       #{node.hive2.base_dir}/bin/schematool -dbType mysql -initSchema
         EOH
-     not_if "#{node.ndb.scripts_dir}/mysql-client.sh -e \"SHOW DATABASES\" | grep metastore|"
+  not_if "#{node.ndb.scripts_dir}/mysql-client.sh -e \"SHOW DATABASES\" | grep metastore|"
 end
 
 
@@ -121,13 +121,13 @@ end
 
 case node.platform
 when "ubuntu"
- if node.platform_version.to_f <= 14.04
-   node.override.hive2.systemd = "false"
- end
+  if node.platform_version.to_f <= 14.04
+    node.override.hive2.systemd = "false"
+  end
 end
 
 
-service_name="hive-metastore"
+service_name="hivemetastore"
 
 if node.hive2.systemd == "true"
 
@@ -149,9 +149,9 @@ if node.hive2.systemd == "true"
     owner "root"
     group "root"
     mode 0754
-if node.services.enabled == "true"
-    notifies :enable, resources(:service => service_name)
-end
+    if node.services.enabled == "true"
+      notifies :enable, resources(:service => service_name)
+    end
     notifies :start, resources(:service => service_name), :immediately
   end
 
@@ -172,22 +172,22 @@ else #sysv
     owner "root"
     group "root"
     mode 0754
-if node.services.enabled == "true"
-    notifies :enable, resources(:service => service_name)
-end
+    if node.services.enabled == "true"
+      notifies :enable, resources(:service => service_name)
+    end
     notifies :start, resources(:service => service_name), :immediately
   end
 
 end
 
 if node.kagent.enabled == "true" 
-   kagent_config service_name do
-     service service_name
-     log_file node.hive2.metastore-log
-   end
+  kagent_config service_name do
+    service service_name
+    log_file node.hive2.metastore.log
+  end
 end
 
-service_name="hive-server2"
+service_name="hiveserver2"
 
 if node.hive2.systemd == "true"
 
@@ -209,9 +209,9 @@ if node.hive2.systemd == "true"
     owner "root"
     group "root"
     mode 0754
-if node.services.enabled == "true"
-    notifies :enable, resources(:service => service_name)
-end
+    if node.services.enabled == "true"
+      notifies :enable, resources(:service => service_name)
+    end
     notifies :start, resources(:service => service_name), :immediately
   end
 
@@ -232,19 +232,19 @@ else #sysv
     owner "root"
     group "root"
     mode 0754
-if node.services.enabled == "true"
-    notifies :enable, resources(:service => service_name)
-end
+    if node.services.enabled == "true"
+      notifies :enable, resources(:service => service_name)
+    end
     notifies :start, resources(:service => service_name), :immediately
   end
 
 end
 
 if node.kagent.enabled == "true" 
-   kagent_config service_name do
-     service service_name
-     log_file node.hive2.server2-log
-   end
+  kagent_config service_name do
+    service service_name
+    log_file node.hive2.server2.log
+  end
 end
 
 
