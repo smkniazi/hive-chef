@@ -1,23 +1,23 @@
 #!/bin/sh
 #
-# Startup script for livy
+# Startup script for hive
 #
 ### BEGIN INIT INFO
-# Provides:                     livy*
+# Provides:                     hive-server2*
 # Required-Start:                 
 # Should-Start:                 
 # Required-Stop:                  
 # Default-Start:                2 3 4 5
 # Default-Stop:                 0 1 6
-# Short-Description:            start and stop livy-*
-# Description:                  Start/Stop/Restart livy
+# Short-Description:            start and stop hive-server2*
+# Description:                  Start/Stop/Restart hive-server2
 ### END INIT INFO
 
 # Variables
 
-START_PROG="<%= node.livy.base_dir %>/bin/start-livy.sh"  
-STOP_PROG="<%= node.livy.base_dir %>/bin/stop-livy.sh"  
-EXEC_WITH_USER="su <%= node.livy.user %> -c"
+START_PROG="<%= node.hive2.base_dir %>/bin/start-hive-server2.sh"  
+STOP_PROG="<%= node.hive2.base_dir %>/bin/stop-hive-server2.sh"  
+EXEC_WITH_USER="su <%= node.hive2.user %> -c"
 
 start() {
   ulimit -n 65000 2>&1 > /dev/null
@@ -32,16 +32,16 @@ stop() {
 
 status() {
   res=1
-  PID_FILE=<%= node.livy.pid_file %>
+  PID_FILE=<%= node.hive2.server2.pid_file %>
   if [ -f $PID_FILE ] ; then
      PID=`cat $PID_FILE`
      kill -0 $PID
      res=$?
   fi
   if [ $res -eq 0 ] ; then
-   echo "livy($PID) is running"
+   echo "hive($PID) is running"
   else
-   echo "livy is not running"
+   echo "hive is not running"
   fi
   return $res
 }

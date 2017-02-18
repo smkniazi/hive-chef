@@ -115,6 +115,14 @@ Vagrant.configure("2") do |c|
    	  	       "private_ips" => ["10.0.2.15"]
 	       },
      },
+     "hive2" => {
+          "user" => "glassfish",
+          "group" => "glassfish",
+          "dir" => "/srv/hops",
+	  "default" =>      { 
+   	  	       "private_ips" => ["10.0.2.15"]
+	       },
+     },
      "elastic" => {
           "user" => "glassfish",
           "group" => "glassfish",
@@ -270,7 +278,7 @@ Vagrant.configure("2") do |c|
       chef.add_recipe "ndb::install"
       chef.add_recipe "hops::install"
       chef.add_recipe "kzookeeper::install"      
-      chef.add_recipe "hive::install"
+      chef.add_recipe "hive2::install"
       chef.add_recipe "ndb::mgmd"
       chef.add_recipe "ndb::ndbd"
       chef.add_recipe "ndb::mysqld"
@@ -281,7 +289,7 @@ Vagrant.configure("2") do |c|
       chef.add_recipe "hops::nm"
       chef.add_recipe "hops::jhs"
       chef.add_recipe "kzookeeper::default"
-      chef.add_recipe "hive::default"
+      chef.add_recipe "hive2::default"
 
   end 
 

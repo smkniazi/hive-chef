@@ -8,9 +8,7 @@ zk_ips = private_recipe_ips('kzookeeper', 'default')
 zk_endpoints = zk_ips.join(",")
 
 
-home = node.apache_hadoop.hdfs.user_home
-
-zk_endpoint = private_recipe_ip("zookeeper", "nn") + ":#{node.apache_hadoop.nn.port}"
+home = "/user/" + node.hive2.user
 
 magic_shell_environment 'HADOOP_HOME' do
   value "#{node.apache_hadoop.base_dir}"
@@ -21,7 +19,7 @@ magic_shell_environment 'HIVE_HOME' do
 end
 
 magic_shell_environment 'PATH' do
-  value "$PATH:#{node.apache_hadoop.base_dir}/bin"
+  value "$PATH:#{node.apache_hadoop.base_dir}/bin:#{node.hive2.base_dir}/bin"
 end
 
 
@@ -38,8 +36,8 @@ tmp_dirs   = [ hive_dir, hive_dir + "/warehouse" ]
 for d in tmp_dirs
   apache_hadoop_hdfs_directory d do
     action :create_as_superuser
-    owner node.apache_hadoop.yarn.user
-    group node.apache_hadoop.group
+    owner node.hive2.user
+    group node.hive2.group
     mode "1770"
     not_if ". #{node.apache_hadoop.home}/sbin/set-env.sh && #{node.apache_hadoop.home}/bin/hdfs dfs -test -d #{d}"
   end
@@ -62,31 +60,44 @@ template "#{node.hive2.base_dir}/conf/hive-site.xml" do
 end
 
 
-file "#{node.hive.base_dir}/conf/hive-env.sh.erb" do
+file "#{node.hive2.base_dir}/conf/hive-env.sh.erb" do
  action :delete
 end
 
-template "#{node.hive.base_dir}/conf/hive-env.sh" do
+template "#{node.hive2.base_dir}/conf/hive-env.sh" do
   source "hive-env.sh.erb"
   owner node.hive2.user
   group node.hive2.group
   mode 0655
 end
 
-template "#{node.hive.base_dir}/bin/start-hive.sh" do
-  source "start-hive.sh.erb"
+template "#{node.hive2.base_dir}/bin/start-hive-metastore.sh" do
+  source "start-hive-metastore.sh.erb"
   owner node.hive2.user
   group node.hive2.group
   mode 0751
 end
 
-template "#{node.hive.base_dir}/bin/stop-hive.sh" do
-  source "stop-hive.sh.erb"
+template "#{node.hive2.base_dir}/bin/stop-hive-metastore.sh" do
+  source "stop-hive-metastore.sh.erb"
   owner node.hive2.user
   group node.hive2.group
   mode 0751
 end
 
+template "#{node.hive2.base_dir}/bin/start-hive-server2.sh" do
+  source "start-hive-server2.sh.erb"
+  owner node.hive2.user
+  group node.hive2.group
+  mode 0751
+end
+
+template "#{node.hive2.base_dir}/bin/stop-hive-server2.sh" do
+  source "stop-hive-server2.sh.erb"
+  owner node.hive2.user
+  group node.hive2.group
+  mode 0751
+end
 
 
 hive_downloaded = node.hive2.base_dir + "/.hive_setup"
@@ -102,7 +113,7 @@ bash 'setup-hive' do
         #{node.ndb.scripts_dir}/mysql-client.sh -e \"FLUSH PRIVILEGES\"
 #       #{node.hive2.base_dir}/bin/schematool -dbType mysql -initSchema
         EOH
-     not_if "#{node.ndb.scripts_dir}/mysql-client.sh -e \"SHOW DATABASES\" | grep metastore|
+     not_if "#{node.ndb.scripts_dir}/mysql-client.sh -e \"SHOW DATABASES\" | grep metastore|"
 end
 
 
@@ -116,7 +127,7 @@ when "ubuntu"
 end
 
 
-service_name="hive"
+service_name="hive-metastore"
 
 if node.hive2.systemd == "true"
 
@@ -169,11 +180,70 @@ end
 
 end
 
+if node.kagent.enabled == "true" 
+   kagent_config service_name do
+     service service_name
+     log_file node.hive2.metastore-log
+   end
+end
+
+service_name="hive-server2"
+
+if node.hive2.systemd == "true"
+
+  service service_name do
+    provider Chef::Provider::Service::Systemd
+    supports :restart => true, :stop => true, :start => true, :status => true
+    action :nothing
+  end
+
+  case node.platform_family
+  when "rhel"
+    systemd_script = "/usr/lib/systemd/system/#{service_name}.service" 
+  else
+    systemd_script = "/lib/systemd/system/#{service_name}.service"
+  end
+
+  template systemd_script do
+    source "#{service_name}.service.erb"
+    owner "root"
+    group "root"
+    mode 0754
+if node.services.enabled == "true"
+    notifies :enable, resources(:service => service_name)
+end
+    notifies :start, resources(:service => service_name), :immediately
+  end
+
+  kagent_config "reload_#{service_name}" do
+    action :systemd_reload
+  end  
+
+else #sysv
+
+  service service_name do
+    provider Chef::Provider::Service::Init::Debian
+    supports :restart => true, :stop => true, :start => true, :status => true
+    action :nothing
+  end
+
+  template "/etc/init.d/#{service_name}" do
+    source "#{service_name}.erb"
+    owner "root"
+    group "root"
+    mode 0754
+if node.services.enabled == "true"
+    notifies :enable, resources(:service => service_name)
+end
+    notifies :start, resources(:service => service_name), :immediately
+  end
+
+end
 
 if node.kagent.enabled == "true" 
    kagent_config service_name do
      service service_name
-     log_file node.hive2.log
+     log_file node.hive2.server2-log
    end
 end
 

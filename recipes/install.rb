@@ -44,8 +44,8 @@ bash 'extract-hive' do
         group node.hive2.group
         code <<-EOH
                 set -e
-                tar zxf #{cached_package_filename} -d /tmp
-                mv /tmp/hive-server-#{node.hive2.version} #{node.hive2.dir}
+                tar zxf #{cached_package_filename} -C /tmp
+                mv /tmp/apache-hive-#{node.hive2.version}-bin #{node.hive2.dir}
                 # remove old symbolic link, if any
                 rm -f #{node.hive2.base_dir}
                 ln -s #{node.hive2.home} #{node.hive2.base_dir}

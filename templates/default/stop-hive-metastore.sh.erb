@@ -1,9 +1,9 @@
 #!/bin/bash
 
-PID_FILE=<%= node.hive2.pid_file %>
+PID_FILE=<%= node.hive2.metastore.pid_file %>
 
 function kill_named {
-    PID=`ps aux | grep -i hive | awk 'NR==1{print $2}'`
+    PID=`ps aux | grep -i hive-metastore | awk 'NR==1{print $2}'`
     if [ "$PID" != "" ] ; then
 	kill -9 $PID > /dev/null 2>&1
         res=$?
@@ -44,9 +44,9 @@ else
 fi
 
 if [ $res -eq 0 ] ; then
- echo "Killed hive2"
+ echo "Killed hive-metastore"
 else
-    echo "Could not find hive2 process to kill"
+    echo "Could not find hive-metastore process to kill"
 fi
 
 
