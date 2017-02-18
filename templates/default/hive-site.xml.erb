@@ -72,7 +72,7 @@
   </property>
   <property>
     <name>hive.exec.local.scratchdir</name>
-    <value>/tmp/${system:user.name}</value>
+    <value>/tmp/<%= node.hive2.user %></value>
     <description>Local scratch space for Hive jobs</description>
   </property>
   <property>
@@ -1664,7 +1664,7 @@
   </property>
   <property>
     <name>hive.querylog.location</name>
-    <value>/tmp/${system:user.name}</value>
+    <value>/tmp/<%= node.hive2.user %></value>
     <description>Location of Hive run time structured log file</description>
   </property>
   <property>
@@ -3739,7 +3739,7 @@
   </property>
   <property>
     <name>hive.server2.global.init.file.location</name>
-    <value>${env:HIVE_CONF_DIR}</value>
+    <value><%= node.hive2.base_dir %>/conf</value>
     <description>
       Either the location of a HS2 global init file or a directory containing a .hiverc file. If the 
       property is set, the value must be a valid path to an init file or directory where the init file is located.
@@ -3910,7 +3910,7 @@
   </property>
   <property>
     <name>hive.server2.logging.operation.log.location</name>
-    <value>/tmp/${system:user.name}/operation_logs</value>
+    <value>/tmp/<%= node.hive2.user %>/operation_logs</value>
     <description>Top level directory where operation logs are stored if logging functionality is enabled</description>
   </property>
   <property>
