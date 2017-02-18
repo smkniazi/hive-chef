@@ -1,4 +1,4 @@
-name             "hive"
+name             "hive2"
 maintainer       "Jim Dowling"
 maintainer_email "jdowling@kth.se"
 license          "Apache v2"
@@ -9,12 +9,13 @@ source_url       "https://github.com/hopshadoop/hive-chef"
 
 
 
-depends          "hadoop_spark"
 depends          "ndb"
 depends          "hops"
 depends          "apache_hadoop"
 depends          "kagent"
 depends          "java"
+depends          "kzookeeper"
+depends          "magic_shell"
 
 recipe           "install", "Installs a Hive2 Server"
 recipe           "default", "Starts  a Hive  Server"
@@ -28,39 +29,47 @@ attribute "java/install_flavor",
           :description =>  "Oracle (default) or openjdk",
           :type => 'string'
 
-attribute "hive/user",
+attribute "hive2/user",
           :description => "User to install/run as",
           :type => 'string'
 
-attribute "hive/dir",
+attribute "hive2/dir",
           :description => "base dir for installation",
           :type => 'string'
 
-attribute "hive/version",
-          :dscription => "hive.version",
+attribute "hive2/version",
+          :dscription => "hive version",
           :type => "string"
 
-attribute "hive/url",
-          :dscription => "hive.url",
+attribute "hive2/url",
+          :dscription => "hive download url",
           :type => "string"
 
-attribute "hive/port",
+attribute "hive2/port",
           :dscription => "hive.port",
           :type => "string"
 
-attribute "hive/home",
+attribute "hive2/home",
           :dscription => "hive.home",
           :type => "string"
 
-attribute "hive/keystore",
+attribute "hive2/keystore",
           :dscription => "ivy.keystore",
           :type => "string"
 
-attribute "hive/keystore_password",
+attribute "hive2/mysql_user",
+          :dscription => "mysql user account for hive",
+          :type => "string"
+
+attribute "hive2/mysql_password",
+          :dscription => "mysql user account for hive",
+          :type => "string"
+
+attribute "hive2/keystore_password",
           :dscription => "ivy.keystore_password",
           :type => "string"
 
-attribute "hive/default/private_ips",
+attribute "hive2/default/private_ips",
           :description => "Set ip addresses",
           :type => "array"
 

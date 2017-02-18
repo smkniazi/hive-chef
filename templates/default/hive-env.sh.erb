@@ -45,10 +45,10 @@
 
 
 # Set HADOOP_HOME to point to a specific hadoop install directory
-# HADOOP_HOME=${bin}/../../hadoop
+HADOOP_HOME=<%= node.apache_hadoop.base_dir %>
 
 # Hive Configuration Directory can be controlled by:
-# export HIVE_CONF_DIR=
+export HIVE_CONF_DIR=<%= node.hive2.base_dir %>/conf
 
 # Folder containing extra libraries required for hive compilation/execution can be controlled by:
 # export HIVE_AUX_JARS_PATH=

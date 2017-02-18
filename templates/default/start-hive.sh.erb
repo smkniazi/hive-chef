@@ -1,20 +1,19 @@
 #!/bin/bash
 
-export SPARK_HOME=<%= node.hadoop_spark.base_dir %>
-export HADOOP_CONF_DIR=<%= node.apache_hadoop.base_dir %>/etc/hadoop/conf
+export HADOOP_HOME=<%= node.apache_hadoop.base_dir %>
 
-PID_FILE=<%= node.livy.pid_file %>
+PID_FILE=<%= node.hive2.pid_file %>
 if [ -f $PID_FILE ] ; then
  PID=`cat $PID_FILE`
  kill -0 $PID 2>&1 > /dev/null
  if [ $? -eq 0 ] ; then
-     echo "A Livy server is already running. Kill it first."
+     echo "A Hive2 server is already running. Kill it first."
      exit 1
  fi
 fi
 
 
-nohup <%= node.livy.base_dir %>/bin/livy-server  2>&1 > <%= node.livy.log %> &
+nohup <%= node.hive2.base_dir %>/bin/hive-meta  2>&1 > <%= node.hive2.log %> &
 echo $! > $PID_FILE
 
 PID=`cat $PID_FILE`
