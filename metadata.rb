@@ -18,7 +18,10 @@ depends          "kzookeeper"
 depends          "magic_shell"
 
 recipe           "install", "Installs a Hive2 Server"
-recipe           "default", "Starts  a Hive  Server"
+recipe           "default", "Starts both a Hive metastore and server2 and tez"
+recipe           "metastore", "Starts  a Hive Metastore Server"
+recipe           "server2", "Starts  a Hive Server2"
+recipe           "tez", "Starts  a Hive Server2"
 recipe           "purge", "Removes and deletes an installed Hive Server"
 
 attribute "java/jdk_version",
@@ -69,7 +72,11 @@ attribute "hive2/keystore_password",
           :dscription => "ivy.keystore_password",
           :type => "string"
 
-attribute "hive2/default/private_ips",
+attribute "hive2/metastore/private_ips",
+          :description => "Set ip addresses",
+          :type => "array"
+
+attribute "hive2/server2/private_ips",
           :description => "Set ip addresses",
           :type => "array"
 

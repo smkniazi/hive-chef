@@ -31,3 +31,9 @@ default.tez.url                     = "#{node.download_url}/apache-tez-#{node.te
 default.tez.dir                     = "/srv"
 default.tez.home                    =  node.tez.dir + "/apache-tez-" + node.tez.version + "-bin"
 default.tez.base_dir                =  node.tez.dir + "/apache-tez" 
+
+
+default.hive2.metastore.public_ips                   = [''] 
+default.hive2.metastore.private_ips                  = [''] 
+default.hive2.server2.public_ips                     = ['']
+default.hive2.server2.private_ips                    = ['']
