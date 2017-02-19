@@ -39,9 +39,9 @@ status() {
      res=$?
   fi
   if [ $res -eq 0 ] ; then
-   echo "hive($PID) is running"
+   echo "hiveserver2($PID) is running"
   else
-   echo "hive is not running"
+   echo "hiveserver2 is not running"
   fi
   return $res
 }

@@ -6,6 +6,9 @@ nn_endpoint = private_recipe_ip("apache_hadoop", "nn") + ":#{node.apache_hadoop.
 zk_ips = private_recipe_ips('kzookeeper', 'default')
 zk_endpoints = zk_ips.join(",")
 
+mysql_endpoint = private_recipe_ip("ndb", "mysqld") + ":#{node.ndb.mysql_port}"
+
+metastore_ip = private_recipe_ip("hive2", "metastore")
 
 case node.platform
 when "ubuntu"
@@ -61,6 +64,8 @@ template "#{node.hive2.base_dir}/conf/hive-site.xml" do
   variables({ 
               :private_ip => my_ip,
               :nn_endpoint => nn_endpoint,
+              :mysql_endpoint => mysql_endpoint,
+              :metastore_ip => metastore_ip,
               :zk_endpoints => zk_endpoints        
             })
 end
