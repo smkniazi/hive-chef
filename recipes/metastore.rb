@@ -52,7 +52,7 @@ if node.hive2.systemd == "true"
 
   case node.platform_family
   when "rhel"
-    systemd_script = "/usr/lib/systemd/system/#{service_name}.service" 
+    systemd_script = "/usr/lib/systemd/system/#{service_name}.service"
   else
     systemd_script = "/lib/systemd/system/#{service_name}.service"
   end
@@ -70,7 +70,7 @@ if node.hive2.systemd == "true"
 
   kagent_config "reload_#{service_name}" do
     action :systemd_reload
-  end  
+  end
 
 else #sysv
 
@@ -93,7 +93,7 @@ else #sysv
 
 end
 
-if node.kagent.enabled == "true" 
+if node.kagent.enabled == "true"
   kagent_config service_name do
     service service_name
     log_file node.hive2.metastore.log
