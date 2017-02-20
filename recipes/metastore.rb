@@ -9,11 +9,19 @@ bash 'setup-hive' do
         #{node.ndb.scripts_dir}/mysql-client.sh -e \"CREATE USER '#{node.hive2.mysql_user}'@'localhost' IDENTIFIED BY '#{node.hive2.mysql_password}'\"
         #{node.ndb.scripts_dir}/mysql-client.sh -e \"REVOKE ALL PRIVILEGES, GRANT OPTION FROM '#{node.hive2.mysql_user}'@'localhost'\"
         #{node.ndb.scripts_dir}/mysql-client.sh -e \"CREATE DATABASE IF NOT EXISTS metastore CHARACTER SET latin1\"
-        #{node.ndb.scripts_dir}/mysql-client.sh -e \"GRANT SELECT,INSERT,UPDATE,DELETE,LOCK TABLES,EXECUTE ON metastore.* TO '#{node.hive2.mysql_user}'@'localhost'\"
+        #{node.ndb.scripts_dir}/mysql-client.sh -e \"GRANT CREATE,SELECT,INSERT,UPDATE,DELETE,LOCK TABLES,EXECUTE ON metastore.* TO '#{node.hive2.mysql_user}'@'localhost'\"
         #{node.ndb.scripts_dir}/mysql-client.sh -e \"FLUSH PRIVILEGES\"
+        EOH
+  not_if "#{node.ndb.scripts_dir}/mysql-client.sh -e \"SHOW DATABASES\" | grep metastore"
+end
+
+bash 'schematool' do
+  user node.hive2.user
+  group node.hive2.group
+  code <<-EOH
         #{node.hive2.base_dir}/bin/schematool -dbType mysql -initSchema
         EOH
-  not_if "#{node.ndb.scripts_dir}/mysql-client.sh -e \"SHOW DATABASES\" | grep metastore|"
+  not_if "#{node.ndb.scripts_dir}/mysql-client.sh -e metastore \"SHOW TABLES\" | grep -i SDS"
 end
 
 
