@@ -75,7 +75,8 @@ Vagrant.configure("2") do |c|
           "install" => "true"
      },
      "mysql" => {
-          "dir" => "/srv/hops"
+       "dir" => "/srv/hops",
+       "localhost" => "true",
      },
      "ndb" => {
           "user" => "glassfish",

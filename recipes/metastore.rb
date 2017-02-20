@@ -9,10 +9,9 @@ bash 'setup-hive' do
         #{node.ndb.scripts_dir}/mysql-client.sh -e \"CREATE USER '#{node.hive2.mysql_user}'@'localhost' IDENTIFIED BY '#{node.hive2.mysql_password}'\"
         #{node.ndb.scripts_dir}/mysql-client.sh -e \"REVOKE ALL PRIVILEGES, GRANT OPTION FROM '#{node.hive2.mysql_user}'@'localhost'\"
         #{node.ndb.scripts_dir}/mysql-client.sh -e \"CREATE DATABASE IF NOT EXISTS metastore CHARACTER SET latin1\"
-        #{node.ndb.scripts_dir}/mysql-client.sh metastore -e \"SOURCE #{node.hive2.base_dir}/scripts/metastore/upgrade/mysql/hive-schema-2.2.0.mysql.sql\"
         #{node.ndb.scripts_dir}/mysql-client.sh -e \"GRANT SELECT,INSERT,UPDATE,DELETE,LOCK TABLES,EXECUTE ON metastore.* TO '#{node.hive2.mysql_user}'@'localhost'\"
         #{node.ndb.scripts_dir}/mysql-client.sh -e \"FLUSH PRIVILEGES\"
-#       #{node.hive2.base_dir}/bin/schematool -dbType mysql -initSchema
+        #{node.hive2.base_dir}/bin/schematool -dbType mysql -initSchema
         EOH
   not_if "#{node.ndb.scripts_dir}/mysql-client.sh -e \"SHOW DATABASES\" | grep metastore|"
 end
