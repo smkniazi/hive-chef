@@ -31,6 +31,13 @@ magic_shell_environment 'PATH' do
   value "$PATH:#{node.apache_hadoop.base_dir}/bin:#{node.hive2.base_dir}/bin"
 end
 
+#
+# See Cloudera tutorial for installing metastore with MySQL
+# https://www.cloudera.com/documentation/enterprise/5-8-x/topics/cdh_ig_hive_metastore_configure.html
+#
+# and this one:
+# http://www.toadworld.com/platforms/oracle/w/wiki/11427.using-mysql-database-as-apache-hive-metastore-database
+#
 
 cookbook_file "#{node.hive2.base_dir}/lib/mysql-connector-java-5.1.40-bin.jar" do
   source "mysql-connector-java-5.1.40-bin.jar"
@@ -39,8 +46,7 @@ cookbook_file "#{node.hive2.base_dir}/lib/mysql-connector-java-5.1.40-bin.jar" d
   mode "0644"
 end
 
-hive_dir="#{home}/#{node.hive2.user}/hive"
-#tmp_dirs   = [ hive_dir, hive_dir + "/warehouse", "/wlslog" ]
+hive_dir="#{home}/#{node.hive2.user}"
 tmp_dirs   = [ hive_dir, hive_dir + "/warehouse" ]
 for d in tmp_dirs
   apache_hadoop_hdfs_directory d do
@@ -66,7 +72,8 @@ template "#{node.hive2.base_dir}/conf/hive-site.xml" do
               :nn_endpoint => nn_endpoint,
               :mysql_endpoint => mysql_endpoint,
               :metastore_ip => metastore_ip,
-              :zk_endpoints => zk_endpoints        
+              :zk_endpoints => zk_endpoints,
+              :hive_hdfs_home => hive_dir
             })
 end
 
@@ -82,19 +89,3 @@ template "#{node.hive2.base_dir}/conf/hive-env.sh" do
   mode 0655
 end
 
-
-hive_downloaded = node.hive2.base_dir + "/.hive_setup"
-bash 'setup-hive' do
-  user "root"
-  group node.hive2.group
-  code <<-EOH
-        #{node.ndb.scripts_dir}/mysql-client.sh -e \"CREATE USER '#{node.hive2.mysql_user}'@'localhost' IDENTIFIED BY '#{node.hive2.mysql_password}'\"
-        #{node.ndb.scripts_dir}/mysql-client.sh -e \"REVOKE ALL PRIVILEGES, GRANT OPTION FROM '#{node.hive2.mysql_user}'@'localhost'\"
-        #{node.ndb.scripts_dir}/mysql-client.sh -e \"CREATE DATABASE IF NOT EXISTS metastore CHARACTER SET latin1\"
-        #{node.ndb.scripts_dir}/mysql-client.sh metastore -e \"SOURCE #{node.hive2.base_dir}/scripts/metastore/upgrade/mysql/hive-schema-2.2.0.mysql.sql\"
-        #{node.ndb.scripts_dir}/mysql-client.sh -e \"GRANT SELECT,INSERT,UPDATE,DELETE,LOCK TABLES,EXECUTE ON metastore.* TO '#{node.hive2.mysql_user}'@'localhost'\"
-        #{node.ndb.scripts_dir}/mysql-client.sh -e \"FLUSH PRIVILEGES\"
-#       #{node.hive2.base_dir}/bin/schematool -dbType mysql -initSchema
-        EOH
-  not_if "#{node.ndb.scripts_dir}/mysql-client.sh -e \"SHOW DATABASES\" | grep metastore|"
-end

@@ -41,7 +41,7 @@
   </property>
   <property>
     <name>hive.repl.rootdir</name>
-    <value>/user/hive/repl/</value>
+    <value><%= @hive_hdfs_home %>/repl/</value>
     <description>HDFS root dir for all replication dumps.</description>
   </property>
   <property>
@@ -51,7 +51,7 @@
   </property>
   <property>
     <name>hive.repl.cmrootdir</name>
-    <value>/user/hive/cmroot/</value>
+    <value><%= @hive_hdfs_home %>/cmroot/</value>
     <description>Root dir for ChangeManager, used for deleted files.</description>
   </property>
   <property>
@@ -363,7 +363,7 @@
   </property>
   <property>
     <name>hive.metastore.warehouse.dir</name>
-    <value>hdfs://<%= @nn_endpoint %>/user/hive/warehouse</value>
+    <value>hdfs://<%= @nn_endpoint %><%= @hive_hdfs_home %>/warehouse</value>
     <description>location of default database for the warehouse</description>
   </property>
   <property>
