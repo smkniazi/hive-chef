@@ -9,7 +9,7 @@ bash 'setup-hive' do
         #{node.ndb.scripts_dir}/mysql-client.sh -e \"CREATE USER '#{node.hive2.mysql_user}'@'localhost' IDENTIFIED BY '#{node.hive2.mysql_password}'\"
         #{node.ndb.scripts_dir}/mysql-client.sh -e \"REVOKE ALL PRIVILEGES, GRANT OPTION FROM '#{node.hive2.mysql_user}'@'localhost'\"
         #{node.ndb.scripts_dir}/mysql-client.sh -e \"CREATE DATABASE IF NOT EXISTS metastore CHARACTER SET latin1\"
-        #{node.ndb.scripts_dir}/mysql-client.sh -e \"GRANT CREATE,SELECT,INSERT,UPDATE,DELETE,LOCK TABLES,EXECUTE ON metastore.* TO '#{node.hive2.mysql_user}'@'localhost'\"
+        #{node.ndb.scripts_dir}/mysql-client.sh -e \"GRANT CREATE,SELECT,INSERT,UPDATE,DELETE,LOCK TABLES,EXECUTE ON,INDEX metastore.* TO '#{node.hive2.mysql_user}'@'localhost'\"
         #{node.ndb.scripts_dir}/mysql-client.sh -e \"FLUSH PRIVILEGES\"
         EOH
   not_if "#{node.ndb.scripts_dir}/mysql-client.sh -e \"SHOW DATABASES\" | grep metastore"
@@ -51,7 +51,7 @@ if node.hive2.systemd == "true"
 
   case node.platform_family
   when "rhel"
-    systemd_script = "/usr/lib/systemd/system/#{service_name}.service" 
+    systemd_script = "/usr/lib/systemd/system/#{service_name}.service"
   else
     systemd_script = "/lib/systemd/system/#{service_name}.service"
   end
@@ -69,7 +69,7 @@ if node.hive2.systemd == "true"
 
   kagent_config "reload_#{service_name}" do
     action :systemd_reload
-  end  
+  end
 
 else #sysv
 
@@ -92,7 +92,7 @@ else #sysv
 
 end
 
-if node.kagent.enabled == "true" 
+if node.kagent.enabled == "true"
   kagent_config service_name do
     service service_name
     log_file node.hive2.metastore.log
