@@ -128,7 +128,7 @@ Vagrant.configure("2") do |c|
           "user" => "glassfish",
           "group" => "glassfish",
           "dir" => "/srv/hops",
-	  "default" =>      { 
+	  "metastore" =>      {
    	  	       "private_ips" => ["10.0.2.15"]
 	       },
      },
