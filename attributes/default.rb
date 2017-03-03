@@ -14,6 +14,8 @@ default.hive2.base_dir                =  node.hive2.dir + "/apache-hive"
 default.hive2.keystore                = "#{node.kagent.base_dir}/node_server_keystore.jks"
 default.hive2.keystore_password       = "changeit"
 
+default.hive2.mysql_host              = "10.0.2.15"
+default.hive2.mysql_port              = "3306"
 default.hive2.mysql_user              = "hive"
 default.hive2.mysql_password          = "hive"
 
