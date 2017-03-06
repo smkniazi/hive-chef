@@ -1,7 +1,7 @@
 include_recipe "hops::wrap"
 
 my_ip = my_private_ip()
-nn_endpoint = private_recipe_ip("apache_hadoop", "nn") + ":#{node.apache_hadoop.nn.port}"
+nn_endpoint = private_recipe_ip("hops", "nn") + ":#{node.hops.nn.port}"
 
 zk_ips = private_recipe_ips('kzookeeper', 'default')
 zk_endpoints = zk_ips.join(",")
@@ -67,7 +67,7 @@ template "#{node.hive2.base_dir}/conf/hive-site.xml" do
   owner node.hive2.user
   group node.hive2.group
   mode 0655
-  variables({ 
+  variables({
               :private_ip => my_ip,
               :nn_endpoint => nn_endpoint,
               :mysql_endpoint => mysql_endpoint,
