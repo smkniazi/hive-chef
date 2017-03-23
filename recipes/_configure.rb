@@ -46,7 +46,7 @@ cookbook_file "#{node.hive2.base_dir}/lib/mysql-connector-java-5.1.40-bin.jar" d
   mode "0644"
 end
 
-hive_dir="#{home}/#{node.hive2.user}"
+hive_dir="#{home}/"
 tmp_dirs   = [ hive_dir, hive_dir + "/warehouse" ]
 for d in tmp_dirs
   hops_hdfs_directory d do
