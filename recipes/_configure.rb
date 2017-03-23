@@ -78,7 +78,7 @@ template "#{node.hive2.base_dir}/conf/hive-site.xml" do
 end
 
 
-file "#{node.hive2.base_dir}/conf/hive-env.sh.erb" do
+file "#{node.hive2.base_dir}/conf/hive-env.sh" do
   action :delete
 end
 
@@ -86,6 +86,18 @@ template "#{node.hive2.base_dir}/conf/hive-env.sh" do
   source "hive-env.sh.erb"
   owner node.hive2.user
   group node.hive2.group
+  mode 0655
+end
+
+# Until Tez is fixed we'll use mapreduce. Expand memory limits for mapred yarn containers.
+file "#{node.hops.conf_dir}/mapred-site.xml" do
+  action :delete
+end
+
+template "#{node.hops.conf_dir}/mapred-site.xml" do
+  source "mapred-site.xml.erb"
+  owner node.hops.hdfs.user
+  group node.hops.group
   mode 0655
 end
 
