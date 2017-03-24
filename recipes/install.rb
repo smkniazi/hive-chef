@@ -54,8 +54,33 @@ bash 'extract-hive' do
      not_if { ::File.exists?( "#{hive_downloaded}" ) }
 end
 
+# Download and extract hive_cleaner
+package_url = "#{node.hive2.hive_cleaner.url}"
+base_package_filename = File.basename(package_url)
+cached_package_filename = "/tmp/#{base_package_filename}"
 
+remote_file cached_package_filename do
+  source package_url
+  owner node.hops.hdfs.user
+  group node.hops.group
+  mode "0644"
+  action :create_if_missing
+end
 
+cleaner_downloaded = "#{node.hive2.home}/.cleaner_extracted_#{node.hive2.hive_cleaner.version}"
+
+bash 'extract-cleaner' do
+        user node.hops.hdfs.user
+        group node.hops.group
+        code <<-EOH
+                set -e
+                tar zxf #{cached_package_filename} -C /tmp
+                mv /tmp/hivecleaner-#{node.hive2.hive_cleaner.version}/hive_cleaner #{node.hive2.dir}/bin/
+                # remove old symbolic link, if any
+                touch #{cleaner_downloaded}
+        EOH
+     not_if { ::File.exists?( "#{cleaner_downloaded}" ) }
+end
 
 group node.tez.group do
   action :create
@@ -77,7 +102,7 @@ group node.tez.group do
 end
 
 
-
+# FIXME: currently not working.
 package_url = "#{node.tez.url}"
 base_package_filename = File.basename(package_url)
 cached_package_filename = "/tmp/#{base_package_filename}"
@@ -89,7 +114,7 @@ remote_file cached_package_filename do
   action :create_if_missing
 end
 
-# Extract Hive
+# Extract Tez
 tez_downloaded = "#{node.tez.home}/.tez_extracted_#{node.tez.version}"
 
 bash 'extract-tez' do
