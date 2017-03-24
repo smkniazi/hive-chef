@@ -75,7 +75,7 @@ bash 'extract-cleaner' do
         code <<-EOH
                 set -e
                 tar zxf #{cached_package_filename} -C /tmp
-                mv /tmp/hivecleaner-#{node.hive2.hive_cleaner.version}/hive_cleaner #{node.hive2.dir}/bin/
+                mv /tmp/hivecleaner-#{node.hive2.hive_cleaner.version}/hive_cleaner #{node.hive2.base_dir}/bin/
                 touch #{cleaner_downloaded}
         EOH
      not_if { ::File.exists?( "#{cleaner_downloaded}" ) }
