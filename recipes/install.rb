@@ -76,12 +76,24 @@ bash 'extract-cleaner' do
                 set -e
                 tar zxf #{cached_package_filename} -C /tmp
                 mv /tmp/hivecleaner-#{node.hive2.hive_cleaner.version}/hive_cleaner #{node.hive2.dir}/bin/
-                # remove old symbolic link, if any
                 touch #{cleaner_downloaded}
         EOH
      not_if { ::File.exists?( "#{cleaner_downloaded}" ) }
 end
 
+#Add the wiper
+file "#{node.hive2.dir}/bin/wiper.sh" do
+  action :delete
+end
+
+template "#{node.hive2.dir}/bin/wiper.sh" do
+  source "wiper.sh.erb"
+  owner node.hops.hdfs.user
+  group node.hops.group
+  mode 0755
+end
+
+# FIXME: currently not working.
 group node.tez.group do
   action :create
   not_if "getent group #{node.tez.group}"
@@ -101,8 +113,6 @@ group node.tez.group do
   append true
 end
 
-
-# FIXME: currently not working.
 package_url = "#{node.tez.url}"
 base_package_filename = File.basename(package_url)
 cached_package_filename = "/tmp/#{base_package_filename}"
