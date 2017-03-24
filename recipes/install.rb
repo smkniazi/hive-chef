@@ -82,11 +82,11 @@ bash 'extract-cleaner' do
 end
 
 #Add the wiper
-file "#{node.hive2.dir}/bin/wiper.sh" do
+file "#{node.hive2.base_dir}/bin/wiper.sh" do
   action :delete
 end
 
-template "#{node.hive2.dir}/bin/wiper.sh" do
+template "#{node.hive2.base_dir}/bin/wiper.sh" do
   source "wiper.sh.erb"
   owner node.hops.hdfs.user
   group node.hops.group
