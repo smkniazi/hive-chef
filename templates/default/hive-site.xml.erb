@@ -549,6 +549,14 @@
     </description>
   </property>
   <property>
+    <name>hops.db.ConnectionURL</name>
+    <value>jdbc:mysql://<%= node.hive2.mysql_host %>:<%= node.hive2.mysql_port %>/hops</value>
+    <description>
+      JDBC connect string for a JDBC hops database.
+      To use SSL to encrypt/authenticate the connection, provide database-specific SSL flag in the connection URL.
+    </description>
+  </property>
+  <property>
     <name>hive.metastore.dbaccess.ssl.properties</name>
     <value/>
     <description>
@@ -722,6 +730,11 @@
     <name>datanucleus.storeManagerType</name>
     <value>rdbms</value>
     <description>metadata store type</description>
+  </property>
+  <property>
+    <name>datanucleus.rdbms.mysql.engineType</name>
+    <value>ndbcluster</value>
+    <description>Engine for MySQL. Default ndbcluster.</description>
   </property>
   <property>
     <name>datanucleus.schema.autoCreateAll</name>
