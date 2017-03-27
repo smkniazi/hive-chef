@@ -56,36 +56,20 @@ end
 
 # Download and extract hive_cleaner
 # Install lihbdfs3 dependencies
-package ['libc6', 'libgcc1', 'libgsasl7', 'libkrb5-3', 'libprotobuf8', 'libstdc++6', 'libuuid1', 'libxml2']
-
- # Download and extract libhdfs3 dependency
-package_url = "#{node.hive2.hive_cleaner.dependency}"
-base_package_filename = File.basename(package_url)
-cached_package_filename = "/tmp/#{base_package_filename}"
-
-remote_file cached_package_filename do
-  source package_url
-  owner node.hops.hdfs.user
-  group node.hops.group
-  mode "0644"
-  action :create_if_missing
+case node[:platform]
+when 'redhat', 'centos'
+  sudo yum install -y epel-release
+  sudo curl -L "https://bintray.com/wangzw/rpm/rpm" -o /etc/yum.repos.d/bintray-wangzw-rpm.repo
+  sudo yum makecache
+  sudo yum install -y libhdfs3 libhdfs3-devel
+when 'ubuntu', 'debian'
+  echo "deb https://dl.bintray.com/wangzw/deb trusty contrib" | sudo tee /etc/apt/sources.list.d/bintray-wangzw-deb.list
+  sudo apt-get install -y apt-transport-https
+  sudo apt-get update
+  sudo apt-get install libhdfs3 libhdfs3-dev
 end
 
-dep_cleaner_downloaded = "#{node.hive2.home}/.dep_cleaner_extracted_#{node.hive2.hive_cleaner.version}"
-
-bash 'extract-dep-cleaner' do
-        user "root"
-        group "root"
-        code <<-EOH
-                set -e
-                tar zxf #{cached_package_filename} -C /tmp
-                mv /tmp/libhdfs3-rpc-9/lib/* /usr/local/lib/
-                touch #{dep_cleaner_downloaded}
-        EOH
-     not_if { ::File.exists?( "#{dep_cleaner_downloaded}" ) }
-end
-
-# Download Hive
+# Download Hive cleaner
 package_url = "#{node.hive2.hive_cleaner.url}"
 base_package_filename = File.basename(package_url)
 cached_package_filename = "/tmp/#{base_package_filename}"
