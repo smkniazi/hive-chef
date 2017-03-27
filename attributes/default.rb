@@ -32,8 +32,6 @@ default.hive2.hive_cleaner.dep       = "#{node.download_url}/hivecleaner/libhdfs
 default.hive2.hive_cleaner.log       = "#{node.hive2.base_dir}/hive-cleaner.log"
 default.hive2.hive_cleaner.pid_file  = "/tmp/hivecleaner.pid"
 
-default.hive2.hive_cleaner.dependency = "#{node.download_url}/hivecleaner/#{node.platform}/libhdfs3.tar.gz"
-
 default.tez.user                    = "tez"
 default.tez.group                   = node.hops.group
 default.tez.version                 = "0.8.4"
