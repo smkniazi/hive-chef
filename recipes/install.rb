@@ -68,6 +68,7 @@ when 'centos' do
         yum install -y libhdfs3 libhdfs3-devel
     EOH
   end
+end
   when 'ubuntu' do
     apt_repository 'pivotal' do
       uri          'https://dl.bintray.com/wangzw/deb'
