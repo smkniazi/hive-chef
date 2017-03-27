@@ -57,7 +57,7 @@ end
 # Download and extract hive_cleaner
 # Install lihbdfs3 dependencies
 case node[:platform]
-when 'centos' do
+when 'centos'
   bash 'install-dep' do
     user 'root'
     group 'root'
@@ -68,15 +68,15 @@ when 'centos' do
         yum install -y libhdfs3 libhdfs3-devel
     EOH
   end
-end
-  when 'ubuntu' do
+when 'ubuntu'
     apt_repository 'pivotal' do
       uri          'https://dl.bintray.com/wangzw/deb'
       distribution 'trusty'
       components   ['contrib']
     end
-    apt_package['libhdfs3', 'libhdfs3-devel']
-  end
+    apt_package ['libhdfs3', 'libhdfs3-dev'] do
+      options '--force-yes'
+    end
 end
 
 # Download Hive cleaner

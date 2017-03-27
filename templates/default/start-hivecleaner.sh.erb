@@ -10,7 +10,7 @@ if [ -f $PID_FILE ] ; then
  fi
 fi
 
-nohup <%= node.hive2.base_dir %>/bin/hive_cleaner --connection <%= node.ndb.ip %>:<%= node.ndb.mgmd.port %> --database hops 2>&1 > <%= node.hive2.hive_cleaner.log %> &
+nohup <%= node.hive2.base_dir %>/bin/hive_cleaner --connection <%= node.ndb.ip %>:<%= node.ndb.mgmd.port %> --database metastore 2>&1 > <%= node.hive2.hive_cleaner.log %> &
 echo $! > $PID_FILE
 
 PID=`cat $PID_FILE`
