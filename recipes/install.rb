@@ -55,6 +55,34 @@ bash 'extract-hive' do
 end
 
 # Download and extract hive_cleaner
+# Download dependencies
+package_url = "#{node.hive2.hive_cleaner.dependency}"
+base_package_filename = File.basename(package_url)
+cached_package_filename = "/tmp/#{base_package_filename}"
+
+remote_file cached_package_filename do
+  source package_url
+  owner node.hops.hdfs.user
+  group node.hops.group
+  mode "0644"
+  action :create_if_missing
+end
+
+dep_cleaner_downloaded = "#{node.hive2.home}/.dep_cleaner_extracted_#{node.hive2.hive_cleaner.version}"
+
+bash 'extract-dep-cleaner' do
+        user "root"
+        group "root"
+        code <<-EOH
+                set -e
+                tar zxf #{cached_package_filename} -C /tmp
+                mv /tmp/libhdfs3-rpc-9/lib/* /usr/local/lib/
+                touch #{dep_cleaner_downloaded}
+        EOH
+     not_if { ::File.exists?( "#{dep_cleaner_downloaded}" ) }
+end
+
+# Download Hive
 package_url = "#{node.hive2.hive_cleaner.url}"
 base_package_filename = File.basename(package_url)
 cached_package_filename = "/tmp/#{base_package_filename}"
