@@ -63,7 +63,7 @@ when 'redhat', 'centos'
     group 'root'
     code <<-EOH
         yum install -y epel-release
-        curl -L "https://bintray.com/wangzw/rpm/rpm" -o /etc/yum.repos.d/bintray-wangzw-rpm.repo
+        curl -L \"https://bintray.com/wangzw/rpm/rpm\" -o /etc/yum.repos.d/bintray-wangzw-rpm.repo
         yum makecache
         yum install -y libhdfs3 libhdfs3-devel
     EOH
