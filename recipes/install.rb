@@ -58,15 +58,24 @@ end
 # Install lihbdfs3 dependencies
 case node[:platform]
 when 'redhat', 'centos'
-  sudo yum install -y epel-release
-  sudo curl -L "https://bintray.com/wangzw/rpm/rpm" -o /etc/yum.repos.d/bintray-wangzw-rpm.repo
-  sudo yum makecache
-  sudo yum install -y libhdfs3 libhdfs3-devel
-when 'ubuntu', 'debian'
-  echo "deb https://dl.bintray.com/wangzw/deb trusty contrib" | sudo tee /etc/apt/sources.list.d/bintray-wangzw-deb.list
-  sudo apt-get install -y apt-transport-https
-  sudo apt-get update
-  sudo apt-get install libhdfs3 libhdfs3-dev
+  bash 'install-dep' do
+    user 'root'
+    group 'root'
+    code <<-EOH
+        yum install -y epel-release
+        curl -L "https://bintray.com/wangzw/rpm/rpm" -o /etc/yum.repos.d/bintray-wangzw-rpm.repo
+        yum makecache
+        yum install -y libhdfs3 libhdfs3-devel
+    EOH
+  end
+  when 'ubuntu', 'debian'
+    apt_repository 'pivotal' do
+      uri          'https://dl.bintray.com/wangzw/deb'
+      distribution 'trusty'
+      components   ['contrib']
+    end
+    apt_package['libhdfs3', 'libhdfs3-devel']
+  end
 end
 
 # Download Hive cleaner
