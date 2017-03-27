@@ -21,7 +21,7 @@ bash 'schematool' do
   code <<-EOH
         #{node.hive2.base_dir}/bin/schematool -dbType mysql -initSchema
         EOH
-  not_if "#{node.ndb.scripts_dir}/mysql-client.sh -e metastore \"SHOW TABLES\" | grep -i SDS"
+  not_if "#{node.ndb.scripts_dir}/mysql-client.sh -e \"use metastore; SHOW TABLES;\" | grep -i SDS"
 end
 
 
