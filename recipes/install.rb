@@ -55,7 +55,10 @@ bash 'extract-hive' do
 end
 
 # Download and extract hive_cleaner
-# Download dependencies
+# Install lihbdfs3 dependencies
+package ['libc6', 'libgcc1', 'libgsasl7', 'libkrb5-3', 'libprotobuf8', 'libstdc++6', 'libuuid1', 'libxml2']
+
+ # Download and extract libhdfs3 dependency
 package_url = "#{node.hive2.hive_cleaner.dependency}"
 base_package_filename = File.basename(package_url)
 cached_package_filename = "/tmp/#{base_package_filename}"
