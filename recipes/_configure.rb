@@ -10,13 +10,6 @@ mysql_endpoint = private_recipe_ip("ndb", "mysqld") + ":#{node.ndb.mysql_port}"
 
 metastore_ip = private_recipe_ip("hive2", "metastore")
 
-case node.platform
-when "ubuntu"
-  if node.platform_version.to_f <= 14.04
-    node.override.hive2.systemd = "false"
-  end
-end
-
 home = "/user/" + node.hive2.user
 
 magic_shell_environment 'HADOOP_HOME' do
