@@ -1,15 +1,24 @@
-# Livy REST Server for Spark on YARN
-
-Livy Chef Cookbook
+HopsHive Chef Cookbook
 ======
 
+Recipe to install HopsHive
 
+## Configuration
 
-To start livy server:
+`/srv/hops/apache-hive/conf/hive-site.xml`
 
-${LIVY_HOME}/bin/start-livy.sh
+## Start/Stop/Restart
 
+```
+# systemctl start/stop/restart hivemetastore
+# systemctl start/stop/restart hivecleaner
+# systemctl start/stop/restart hiveserver2
+```
 
-To stop the livy server:
-${LIVY_HOME}/bin/stop-livy.sh
+## Logs
+```
+# journalctl -u hivemetastore -r
+# journalctl -u hiveserver2 -r
+# journalctl -u hivecleaner -r
+```
 
