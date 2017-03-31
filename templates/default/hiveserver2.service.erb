@@ -5,12 +5,10 @@ After = syslog.target network.target remote-fs.target
 [Service]
 User = <%= node.hive2.user %>
 
-PIDFile = <%= node.hive2.server2.pid_file %>
-ExecStart = <%= node.hive2.base_dir %>/bin/start-hiveserver2.sh
-ExecStop = <%= node.hive2.base_dir %>/bin/stop-hiveserver2.sh
+ExecStart = <%= node.hive2.base_dir %>/bin/hiveserver2
 LimitNOFILE = 20000
 
-Type = forking
+Type = simple
 
 [Install]
 WantedBy = multi-user.target
