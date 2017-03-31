@@ -70,8 +70,7 @@ when 'centos'
   end
 when 'ubuntu'
    apt_package ['libc6', 'libgcc1', 'libgsasl7', 'libkrb5-3',
-                'libprotobuf9v5', 'libstdc++6', 'libuuid1',
-                'libxml2']
+                'libstdc++6', 'libuuid1', 'libxml2']
 
   # Download libhdfs3
   package_url = "#{node.hive2.hive_cleaner.libhdfs3}"
