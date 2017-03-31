@@ -28,7 +28,6 @@ default.hive2.systemd                 = "true"
 
 default.hive2.hive_cleaner.version   = "0.1.1"
 default.hive2.hive_cleaner.url       = "#{node.download_url}/hivecleaner/#{node.platform}/hivecleaner-#{node.hive2.hive_cleaner.version}.tar.gz"
-default.hive2.hive_cleaner.dep       = "#{node.download_url}/hivecleaner/libhdfs3.tar.gz"
 default.hive2.hive_cleaner.log       = "#{node.hive2.base_dir}/hive-cleaner.log"
 default.hive2.hive_cleaner.pid_file  = "/tmp/hivecleaner.pid"
 
