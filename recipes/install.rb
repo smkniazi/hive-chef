@@ -69,14 +69,36 @@ when 'centos'
     EOH
   end
 when 'ubuntu'
-    apt_repository 'pivotal' do
-      uri          'https://dl.bintray.com/wangzw/deb'
-      distribution 'trusty'
-      components   ['contrib']
-    end
-    apt_package ['libhdfs3', 'libhdfs3-dev'] do
-      options '--force-yes'
-    end
+   apt_package ['libc6', 'libgcc1', 'libgsasl7', 'libkrb5-3',
+                'libprotobuf9v5', 'libstdc++6', 'libuuid1',
+                'libxml2']
+
+  # Download libhdfs3
+  package_url = "#{node.hive2.hive_cleaner.libhdfs3}"
+  base_package_filename = File.basename(package_url)
+  cached_package_filename = "/tmp/#{base_package_filename}"
+
+  remote_file cached_package_filename do
+    source package_url
+    owner 'root'
+    group 'root'
+    mode "0644"
+    action :create_if_missing
+  end
+
+  libhdfs3_downloaded = "#{node.hive2.home}/.libhdfs3"
+
+  bash 'extract-libhdfs3' do
+          user 'root'
+          group 'root'
+          code <<-EOH
+                  set -e
+                  tar zxf #{cached_package_filename} -C /tmp
+                  mv /tmp/libhdfs3/lib/* /usr/local/lib
+                  touch #{libhdfs3_downloaded}
+          EOH
+      not_if { ::File.exists?( "#{libhdfs3_downloaded}" ) }
+  end
 end
 
 # Download Hive cleaner
