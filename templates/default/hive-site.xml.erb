@@ -817,7 +817,7 @@
   </property>
   <property>
     <name>hive.metastore.pre.event.listeners</name>
-    <value/>
+    <value>org.apache.hadoop.hive.ql.security.authorization.AuthorizationPreEventListener</value>
     <description>List of comma separated listeners for metastore events.</description>
   </property>
   <property>
@@ -3321,7 +3321,7 @@
   </property>
   <property>
     <name>hive.security.authorization.manager</name>
-    <value>org.apache.hadoop.hive.ql.security.authorization.plugin.sqlstd.SQLStdHiveAuthorizerFactory</value>
+    <value>org.apache.hadoop.hive.ql.security.authorization.StorageBasedAuthorizationProvider</value>
     <description>
       The Hive client authorization manager class name. The user defined authorization class should implement
       interface org.apache.hadoop.hive.ql.security.authorization.HiveAuthorizationProvider.
@@ -3337,7 +3337,7 @@
   </property>
   <property>
     <name>hive.security.metastore.authorization.manager</name>
-    <value>org.apache.hadoop.hive.ql.security.authorization.DefaultHiveMetastoreAuthorizationProvider</value>
+    <value>org.apache.hadoop.hive.ql.security.authorization.StorageBasedAuthorizationProvider</value>
     <description>
       Names of authorization manager classes (comma separated) to be used in the metastore
       for authorization. The user defined authorization class should implement interface

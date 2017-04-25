@@ -70,6 +70,16 @@ template "#{node.hive2.base_dir}/conf/hive-site.xml" do
             })
 end
 
+file "#{node.hive2.base_dir}/conf/hiveserver2-site.xml" do
+  action :delete
+end
+
+template "#{node.hive2.base_dir}/conf/hiveserver2-site.xml" do
+  source "hiveserver2-site.xml.erb"
+  owner node.hive2.user
+  group node.hive2.group
+  mode 0655
+end
 
 file "#{node.hive2.base_dir}/conf/hive-env.sh" do
   action :delete
