@@ -8,14 +8,9 @@ zk_endpoints = zk_ips.join(",")
 
 mysql_endpoint = private_recipe_ip("ndb", "mysqld") + ":#{node.ndb.mysql_port}"
 
-metastore_ip = private_recipe_ip("hive2", "metastore")
+hopsworks_endpoint = "http://" + private_recipe_ip("hopsworks", "default") + ":#{node.hopsworks.port}"
 
-case node.platform
-when "ubuntu"
-  if node.platform_version.to_f <= 14.04
-    node.override.hive2.systemd = "false"
-  end
-end
+metastore_ip = private_recipe_ip("hive2", "metastore")
 
 home = "/user/" + node.hive2.user
 
@@ -46,7 +41,7 @@ cookbook_file "#{node.hive2.base_dir}/lib/mysql-connector-java-5.1.40-bin.jar" d
   mode "0644"
 end
 
-hive_dir="#{home}/#{node.hive2.user}"
+hive_dir="#{home}/"
 tmp_dirs   = [ hive_dir, hive_dir + "/warehouse" ]
 for d in tmp_dirs
   hops_hdfs_directory d do
@@ -69,6 +64,7 @@ template "#{node.hive2.base_dir}/conf/hive-site.xml" do
   mode 0655
   variables({
               :private_ip => my_ip,
+              :hopsworks_endpoint => hopsworks_endpoint,
               :nn_endpoint => nn_endpoint,
               :mysql_endpoint => mysql_endpoint,
               :metastore_ip => metastore_ip,
@@ -77,8 +73,18 @@ template "#{node.hive2.base_dir}/conf/hive-site.xml" do
             })
 end
 
+file "#{node.hive2.base_dir}/conf/hiveserver2-site.xml" do
+  action :delete
+end
 
-file "#{node.hive2.base_dir}/conf/hive-env.sh.erb" do
+template "#{node.hive2.base_dir}/conf/hiveserver2-site.xml" do
+  source "hiveserver2-site.xml.erb"
+  owner node.hive2.user
+  group node.hive2.group
+  mode 0655
+end
+
+file "#{node.hive2.base_dir}/conf/hive-env.sh" do
   action :delete
 end
 
@@ -86,6 +92,18 @@ template "#{node.hive2.base_dir}/conf/hive-env.sh" do
   source "hive-env.sh.erb"
   owner node.hive2.user
   group node.hive2.group
+  mode 0655
+end
+
+# Until Tez is fixed we'll use mapreduce. Expand memory limits for mapred yarn containers.
+file "#{node.hops.conf_dir}/mapred-site.xml" do
+  action :delete
+end
+
+template "#{node.hops.conf_dir}/mapred-site.xml" do
+  source "mapred-site.xml.erb"
+  owner node.hops.hdfs.user
+  group node.hops.group
   mode 0655
 end
 

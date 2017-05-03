@@ -12,6 +12,7 @@ source_url       "https://github.com/hopshadoop/hive-chef"
 depends          "ndb"
 depends          "hops"
 depends          "kagent"
+depends          "conda"
 depends          "java"
 depends          "kzookeeper"
 depends          "hopsworks"
@@ -80,7 +81,14 @@ attribute "hive2/server2/private_ips",
           :description => "Set ip addresses",
           :type => "array"
 
+attribute "hive2/metastore/port",
+          :description => "metastore port",
+          :type => "string"
+
 attribute "install/dir",
           :description => "Set to a base directory under which we will install.",
           :type => "string"
 
+attribute "install/user",
+          :description => "User to install the services as",
+          :type => "string"

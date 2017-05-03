@@ -1,7 +1,7 @@
-dependencies: 
+dependencies:
   - recipe: hive2::install
     global:
       - kagent::install
   - recipe: hive2::default
-    global:  
+    global:
       - hops::nm

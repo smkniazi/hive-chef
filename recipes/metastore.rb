@@ -1,5 +1,7 @@
 include_recipe "hive2::_configure"
 
+mysql_endpoint = private_recipe_ip("ndb", "mysqld")
+
 hive_downloaded = node.hive2.base_dir + "/.hive_setup"
 bash 'setup-hive' do
   user "root"
@@ -9,7 +11,8 @@ bash 'setup-hive' do
 #        #{node.ndb.scripts_dir}/mysql-client.sh -e \"REVOKE ALL PRIVILEGES, GRANT OPTION FROM '#{node.hive2.mysql_user}'@'localhost'\"
         #{node.ndb.scripts_dir}/mysql-client.sh -e \"CREATE DATABASE IF NOT EXISTS metastore CHARACTER SET latin1\"
 #        #{node.ndb.scripts_dir}/mysql-client.sh -e \"GRANT CREATE,SELECT,INSERT,UPDATE,DELETE,LOCK TABLES,EXECUTE ON metastore.* TO '#{node.hive2.mysql_user}'@'localhost'\"
-        #{node.ndb.scripts_dir}/mysql-client.sh -e \"GRANT ALL PRIVILEGES ON metastore.* TO '#{node.hive2.mysql_user}'@'#{node.hive2.mysql_host}' IDENTIFIED BY '#{node.hive2.mysql_password}'\"
+        #{node.ndb.scripts_dir}/mysql-client.sh -e \"GRANT ALL PRIVILEGES ON metastore.* TO '#{node.hive2.mysql_user}'@'#{mysql_endpoint}' IDENTIFIED BY '#{node.hive2.mysql_password}'\"
+        #{node.ndb.scripts_dir}/mysql-client.sh -e \"GRANT SELECT ON hops.hdfs_inodes TO '#{node.hive2.mysql_user}'@'#{mysql_endpoint}' IDENTIFIED BY '#{node.hive2.mysql_password}'\"
         #{node.ndb.scripts_dir}/mysql-client.sh -e \"FLUSH PRIVILEGES\"
         EOH
   not_if "#{node.ndb.scripts_dir}/mysql-client.sh -e \"SHOW DATABASES\" | grep metastore"
@@ -21,75 +24,37 @@ bash 'schematool' do
   code <<-EOH
         #{node.hive2.base_dir}/bin/schematool -dbType mysql -initSchema
         EOH
-  not_if "#{node.ndb.scripts_dir}/mysql-client.sh -e metastore \"SHOW TABLES\" | grep -i SDS"
-end
-
-
-template "#{node.hive2.base_dir}/bin/start-hivemetastore.sh" do
-  source "start-hivemetastore.sh.erb"
-  owner node.hive2.user
-  group node.hive2.group
-  mode 0751
-end
-
-template "#{node.hive2.base_dir}/bin/stop-hivemetastore.sh" do
-  source "stop-hivemetastore.sh.erb"
-  owner node.hive2.user
-  group node.hive2.group
-  mode 0751
+  not_if "#{node.ndb.scripts_dir}/mysql-client.sh -e \"use metastore; SHOW TABLES;\" | grep -i SDS"
 end
 
 service_name="hivemetastore"
 
-if node.hive2.systemd == "true"
+case node.platform_family
+when "rhel"
+  systemd_script = "/usr/lib/systemd/system/#{service_name}.service"
+else
+  systemd_script = "/lib/systemd/system/#{service_name}.service"
+end
 
-  service service_name do
-    provider Chef::Provider::Service::Systemd
-    supports :restart => true, :stop => true, :start => true, :status => true
-    action :nothing
+service service_name do
+  provider Chef::Provider::Service::Systemd
+  supports :restart => true, :stop => true, :start => true, :status => true
+  action :nothing
+end
+
+template systemd_script do
+  source "#{service_name}.service.erb"
+  owner "root"
+  group "root"
+  mode 0754
+  if node.services.enabled == "true"
+    notifies :enable, resources(:service => service_name)
   end
+  notifies :start, resources(:service => service_name), :immediately
+end
 
-  case node.platform_family
-  when "rhel"
-    systemd_script = "/usr/lib/systemd/system/#{service_name}.service"
-  else
-    systemd_script = "/lib/systemd/system/#{service_name}.service"
-  end
-
-  template systemd_script do
-    source "#{service_name}.service.erb"
-    owner "root"
-    group "root"
-    mode 0754
-    if node.services.enabled == "true"
-      notifies :enable, resources(:service => service_name)
-    end
-    notifies :start, resources(:service => service_name), :immediately
-  end
-
-  kagent_config "reload_#{service_name}" do
-    action :systemd_reload
-  end
-
-else #sysv
-
-  service service_name do
-    provider Chef::Provider::Service::Init::Debian
-    supports :restart => true, :stop => true, :start => true, :status => true
-    action :nothing
-  end
-
-  template "/etc/init.d/#{service_name}" do
-    source "#{service_name}.erb"
-    owner "root"
-    group "root"
-    mode 0754
-    if node.services.enabled == "true"
-      notifies :enable, resources(:service => service_name)
-    end
-    notifies :start, resources(:service => service_name), :immediately
-  end
-
+kagent_config "reload_#{service_name}" do
+  action :systemd_reload
 end
 
 if node.kagent.enabled == "true"

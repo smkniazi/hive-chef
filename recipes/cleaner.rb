@@ -1,7 +1,4 @@
-include_recipe "hive2::_configure"
-
-service_name="hiveserver2"
-
+service_name="hivecleaner"
 case node.platform_family
 when "rhel"
   systemd_script = "/usr/lib/systemd/system/#{service_name}.service"
@@ -33,7 +30,7 @@ end
 if node.kagent.enabled == "true"
   kagent_config service_name do
     service service_name
-    log_file node.hive2.server2.log
+    log_file node.hive2.metastore.log
   end
 end
 

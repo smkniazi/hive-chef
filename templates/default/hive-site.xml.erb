@@ -25,6 +25,10 @@
     <description/>
   </property>
   <property>
+    <name>hopsworks.endpoint</name>
+    <value><%= @hopsworks_endpoint %></value>
+  </property>
+  <property>
     <name>hive.exec.plan</name>
     <value/>
     <description/>
@@ -542,9 +546,17 @@
   </property>
   <property>
     <name>javax.jdo.option.ConnectionURL</name>
-    <value>jdbc:mysql://<%= node.hive2.mysql_host %>:<%= node.hive2.mysql_port %>/metastore</value>
+    <value>jdbc:mysql://<%= @mysql_endpoint %>/metastore</value>
     <description>
       JDBC connect string for a JDBC metastore.
+      To use SSL to encrypt/authenticate the connection, provide database-specific SSL flag in the connection URL.
+    </description>
+  </property>
+  <property>
+    <name>hops.db.ConnectionURL</name>
+    <value>jdbc:mysql://<%= @mysql_endpoint %>/hops</value>
+    <description>
+      JDBC connect string for a JDBC hops database.
       To use SSL to encrypt/authenticate the connection, provide database-specific SSL flag in the connection URL.
     </description>
   </property>
@@ -724,6 +736,11 @@
     <description>metadata store type</description>
   </property>
   <property>
+    <name>datanucleus.rdbms.mysql.engineType</name>
+    <value>ndbcluster</value>
+    <description>Engine for MySQL. Default ndbcluster.</description>
+  </property>
+  <property>
     <name>datanucleus.schema.autoCreateAll</name>
     <value>false</value>
     <description>Auto creates necessary schema on a startup if one doesn't exist. Set this to false, after creating it once.To enable auto create also set hive.metastore.schema.verification=false. Auto creation is not recommended for production use cases, run schematool command instead.</description>
@@ -804,7 +821,7 @@
   </property>
   <property>
     <name>hive.metastore.pre.event.listeners</name>
-    <value/>
+    <value>org.apache.hadoop.hive.ql.security.authorization.AuthorizationPreEventListener</value>
     <description>List of comma separated listeners for metastore events.</description>
   </property>
   <property>
@@ -3308,7 +3325,7 @@
   </property>
   <property>
     <name>hive.security.authorization.manager</name>
-    <value>org.apache.hadoop.hive.ql.security.authorization.plugin.sqlstd.SQLStdHiveAuthorizerFactory</value>
+    <value>org.apache.hadoop.hive.ql.security.authorization.StorageBasedAuthorizationProvider</value>
     <description>
       The Hive client authorization manager class name. The user defined authorization class should implement
       interface org.apache.hadoop.hive.ql.security.authorization.HiveAuthorizationProvider.
@@ -3324,7 +3341,7 @@
   </property>
   <property>
     <name>hive.security.metastore.authorization.manager</name>
-    <value>org.apache.hadoop.hive.ql.security.authorization.DefaultHiveMetastoreAuthorizationProvider</value>
+    <value>org.apache.hadoop.hive.ql.security.authorization.StorageBasedAuthorizationProvider</value>
     <description>
       Names of authorization manager classes (comma separated) to be used in the metastore
       for authorization. The user defined authorization class should implement interface
@@ -4116,7 +4133,7 @@
   </property>
   <property>
     <name>hive.server2.authentication</name>
-    <value>NONE</value>
+    <value>NOSASL</value>
     <description>
       Expects one of [nosasl, none, ldap, kerberos, pam, custom].
       Client authentication types.
@@ -4169,105 +4186,6 @@
       SPNego service principal would be used by HiveServer2 when Kerberos security is enabled
       and HTTP transport mode is used.
       This needs to be set only if SPNEGO is to be used in authentication.
-    </description>
-  </property>
-  <property>
-    <name>hive.server2.authentication.ldap.url</name>
-    <value/>
-    <description>
-      LDAP connection URL(s),
-      this value could contain URLs to mutiple LDAP servers instances for HA,
-      each LDAP URL is separated by a SPACE character. URLs are used in the
-       order specified until a connection is successful.
-    </description>
-  </property>
-  <property>
-    <name>hive.server2.authentication.ldap.baseDN</name>
-    <value/>
-    <description>LDAP base DN</description>
-  </property>
-  <property>
-    <name>hive.server2.authentication.ldap.Domain</name>
-    <value/>
-    <description/>
-  </property>
-  <property>
-    <name>hive.server2.authentication.ldap.groupDNPattern</name>
-    <value/>
-    <description>
-      COLON-separated list of patterns to use to find DNs for group entities in this directory.
-      Use %s where the actual group name is to be substituted for.
-      For example: CN=%s,CN=Groups,DC=subdomain,DC=domain,DC=com.
-    </description>
-  </property>
-  <property>
-    <name>hive.server2.authentication.ldap.groupFilter</name>
-    <value/>
-    <description>
-      COMMA-separated list of LDAP Group names (short name not full DNs).
-      For example: HiveAdmins,HadoopAdmins,Administrators
-    </description>
-  </property>
-  <property>
-    <name>hive.server2.authentication.ldap.userDNPattern</name>
-    <value/>
-    <description>
-      COLON-separated list of patterns to use to find DNs for users in this directory.
-      Use %s where the actual group name is to be substituted for.
-      For example: CN=%s,CN=Users,DC=subdomain,DC=domain,DC=com.
-    </description>
-  </property>
-  <property>
-    <name>hive.server2.authentication.ldap.userFilter</name>
-    <value/>
-    <description>
-      COMMA-separated list of LDAP usernames (just short names, not full DNs).
-      For example: hiveuser,impalauser,hiveadmin,hadoopadmin
-    </description>
-  </property>
-  <property>
-    <name>hive.server2.authentication.ldap.guidKey</name>
-    <value>uid</value>
-    <description>
-      LDAP attribute name whose values are unique in this LDAP server.
-      For example: uid or CN.
-    </description>
-  </property>
-  <property>
-    <name>hive.server2.authentication.ldap.groupMembershipKey</name>
-    <value>member</value>
-    <description>
-      LDAP attribute name on the group object that contains the list of distinguished names
-      for the user, group, and contact objects that are members of the group.
-      For example: member, uniqueMember or memberUid
-    </description>
-  </property>
-  <property>
-    <name>hive.server2.authentication.ldap.userMembershipKey</name>
-    <value/>
-    <description>
-      LDAP attribute name on the user object that contains groups of which the user is
-      a direct member, except for the primary group, which is represented by the
-      primaryGroupId.
-      For example: memberOf
-    </description>
-  </property>
-  <property>
-    <name>hive.server2.authentication.ldap.groupClassKey</name>
-    <value>groupOfNames</value>
-    <description>
-      LDAP attribute name on the group entry that is to be used in LDAP group searches.
-      For example: group, groupOfNames or groupOfUniqueNames.
-    </description>
-  </property>
-  <property>
-    <name>hive.server2.authentication.ldap.customLDAPQuery</name>
-    <value/>
-    <description>
-      A full LDAP query that LDAP Atn provider uses to execute against LDAP Server.
-      If this query returns a null resultset, the LDAP Provider fails the Authentication
-      request, succeeds if the user is part of the resultset.For example: (&amp;(objectClass=group)(objectClass=top)(instanceType=4)(cn=Domain*))
-      (&amp;(objectClass=person)(|(sAMAccountName=admin)(|(memberOf=CN=Domain Admins,CN=Users,DC=domain,DC=com)(memberOf=CN=Administrators,CN=Builtin,DC=domain,DC=com))))
     </description>
   </property>
   <property>
