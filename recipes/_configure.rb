@@ -8,7 +8,7 @@ zk_endpoints = zk_ips.join(",")
 
 mysql_endpoint = private_recipe_ip("ndb", "mysqld") + ":#{node.ndb.mysql_port}"
 
-hopsworks_endpoint = "http://" + private_recipe_ip("hopsworks", "default") + ":#{node.hopsworks.port}"
+hopsworks_endpoint = "http://" + private_recipe_ip("hopsworks", "default") + ":8080"
 
 metastore_ip = private_recipe_ip("hive2", "metastore")
 
