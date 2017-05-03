@@ -8,6 +8,8 @@ zk_endpoints = zk_ips.join(",")
 
 mysql_endpoint = private_recipe_ip("ndb", "mysqld") + ":#{node.ndb.mysql_port}"
 
+hopsworks_endpoint = "http://" + private_recipe_ip("hopsworks", "default") + ":#{node.hopsworks.port}"
+
 metastore_ip = private_recipe_ip("hive2", "metastore")
 
 home = "/user/" + node.hive2.user
@@ -62,6 +64,7 @@ template "#{node.hive2.base_dir}/conf/hive-site.xml" do
   mode 0655
   variables({
               :private_ip => my_ip,
+              :hopsworks_endpoint => hopsworks_endpoint,
               :nn_endpoint => nn_endpoint,
               :mysql_endpoint => mysql_endpoint,
               :metastore_ip => metastore_ip,

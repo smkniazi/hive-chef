@@ -25,6 +25,10 @@
     <description/>
   </property>
   <property>
+    <name>hopsworks.endpoint</name>
+    <value><%= @hopsworks_endpoint %></value>
+  </property>
+  <property>
     <name>hive.exec.plan</name>
     <value/>
     <description/>
@@ -542,7 +546,7 @@
   </property>
   <property>
     <name>javax.jdo.option.ConnectionURL</name>
-    <value>jdbc:mysql://<%= node.hive2.mysql_host %>:<%= node.hive2.mysql_port %>/metastore</value>
+    <value>jdbc:mysql://<%= @mysql_endpoint %>/metastore</value>
     <description>
       JDBC connect string for a JDBC metastore.
       To use SSL to encrypt/authenticate the connection, provide database-specific SSL flag in the connection URL.
@@ -550,7 +554,7 @@
   </property>
   <property>
     <name>hops.db.ConnectionURL</name>
-    <value>jdbc:mysql://<%= node.hive2.mysql_host %>:<%= node.hive2.mysql_port %>/hops</value>
+    <value>jdbc:mysql://<%= @mysql_endpoint %>/hops</value>
     <description>
       JDBC connect string for a JDBC hops database.
       To use SSL to encrypt/authenticate the connection, provide database-specific SSL flag in the connection URL.
