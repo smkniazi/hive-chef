@@ -1,5 +1,7 @@
 include_recipe "hive2::_configure"
 
+mysql_endpoint = private_recipe_ip("ndb", "mysqld")
+
 hive_downloaded = node.hive2.base_dir + "/.hive_setup"
 bash 'setup-hive' do
   user "root"
@@ -9,8 +11,8 @@ bash 'setup-hive' do
 #        #{node.ndb.scripts_dir}/mysql-client.sh -e \"REVOKE ALL PRIVILEGES, GRANT OPTION FROM '#{node.hive2.mysql_user}'@'localhost'\"
         #{node.ndb.scripts_dir}/mysql-client.sh -e \"CREATE DATABASE IF NOT EXISTS metastore CHARACTER SET latin1\"
 #        #{node.ndb.scripts_dir}/mysql-client.sh -e \"GRANT CREATE,SELECT,INSERT,UPDATE,DELETE,LOCK TABLES,EXECUTE ON metastore.* TO '#{node.hive2.mysql_user}'@'localhost'\"
-        #{node.ndb.scripts_dir}/mysql-client.sh -e \"GRANT ALL PRIVILEGES ON metastore.* TO '#{node.hive2.mysql_user}'@'#{node.hive2.mysql_host}' IDENTIFIED BY '#{node.hive2.mysql_password}'\"
-        #{node.ndb.scripts_dir}/mysql-client.sh -e \"GRANT SELECT ON hops.hdfs_inodes TO '#{node.hive2.mysql_user}'@'#{node.hive2.mysql_host}' IDENTIFIED BY '#{node.hive2.mysql_password}'\"
+        #{node.ndb.scripts_dir}/mysql-client.sh -e \"GRANT ALL PRIVILEGES ON metastore.* TO '#{node.hive2.mysql_user}'@'#{mysql_endpoint}' IDENTIFIED BY '#{node.hive2.mysql_password}'\"
+        #{node.ndb.scripts_dir}/mysql-client.sh -e \"GRANT SELECT ON hops.hdfs_inodes TO '#{node.hive2.mysql_user}'@'#{mysql_endpoint}' IDENTIFIED BY '#{node.hive2.mysql_password}'\"
         #{node.ndb.scripts_dir}/mysql-client.sh -e \"FLUSH PRIVILEGES\"
         EOH
   not_if "#{node.ndb.scripts_dir}/mysql-client.sh -e \"SHOW DATABASES\" | grep metastore"
