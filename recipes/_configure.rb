@@ -6,7 +6,7 @@ nn_endpoint = private_recipe_ip("hops", "nn") + ":#{node.hops.nn.port}"
 zk_ips = private_recipe_ips('kzookeeper', 'default')
 zk_endpoints = zk_ips.join(",")
 
-mysql_endpoint = private_recipe_ip("ndb", "mysqld") + ":8888"
+mysql_endpoint = private_recipe_ip("ndb", "mysqld") + ":#{node.ndb.mysql_port}"
 
 hopsworks_endpoint = "http://" + private_recipe_ip("hopsworks", "default") + ":8080"
 
