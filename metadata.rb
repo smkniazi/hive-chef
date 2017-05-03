@@ -15,7 +15,6 @@ depends          "kagent"
 depends          "java"
 depends          "kzookeeper"
 depends          "magic_shell"
-depends          "hopsworks"
 
 recipe           "install", "Installs a Hive2 Server"
 recipe           "default", "Starts both a Hive metastore and server2 and tez"
