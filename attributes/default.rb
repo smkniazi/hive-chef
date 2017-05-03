@@ -2,6 +2,7 @@ include_attribute "kagent"
 include_attribute "ndb"
 include_attribute "hops"
 include_attribute "kzookeeper"
+include_attribute "hopsworks"
 
 default.hive2.user                    = "hive"
 default.hive2.group                   = node.hops.group

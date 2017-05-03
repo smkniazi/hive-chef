@@ -14,6 +14,7 @@ depends          "hops"
 depends          "kagent"
 depends          "java"
 depends          "kzookeeper"
+depends          "hopsworks"
 depends          "magic_shell"
 
 recipe           "install", "Installs a Hive2 Server"
