@@ -45,3 +45,4 @@ default.hive2.metastore.public_ips                   = ['']
 default.hive2.metastore.private_ips                  = ['']
 default.hive2.server2.public_ips                     = ['']
 default.hive2.server2.private_ips                    = ['']
+

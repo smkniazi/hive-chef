@@ -8,9 +8,24 @@ zk_endpoints = zk_ips.join(",")
 
 mysql_endpoint = private_recipe_ip("ndb", "mysqld") + ":#{node.ndb.mysql_port}"
 
-hopsworks_endpoint = "http://" + private_recipe_ip("hopsworks", "default") + ":#{node.hopsworks.port}"
 
-metastore_ip = private_recipe_ip("hive2", "metastore")
+endpoint = "http"
+if node["install"].attribute?("ssl") == true
+  if node["install"]["ssl"] == "true"
+    endpoint = "https"
+  end
+end
+
+
+hopsworks_endpoint = "#{endpoint}://" + private_recipe_ip("hopsworks", "default") + ":#{node.hopsworks.port}"
+
+begin
+  metastore_ip = private_recipe_ip("hive2", "metastore")
+rescue 
+  metastore_ip = private_recipe_ip("hive2", "default")
+  Chef::Log.warn "Using default ip for metastore (metastore service not defined in cluster definition (yml) file."
+end
+
 
 home = "/user/" + node.hive2.user
 
