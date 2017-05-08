@@ -5,3 +5,10 @@ dependencies:
   - recipe: hive2::default
     global:
       - hops::nm
+  - recipe: hive2::metastore
+    global:
+      - hops::dn
+  - recipe: hive2::server2
+    global:
+      - hive2::metastore
+
