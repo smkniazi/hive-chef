@@ -21,7 +21,7 @@ hopsworks_endpoint = "#{endpoint}://" + private_recipe_ip("hopsworks", "default"
 
 begin
   metastore_ip = private_recipe_ip("hive2", "metastore")
-rescue 
+rescue
   metastore_ip = private_recipe_ip("hive2", "default")
   Chef::Log.warn "Using default ip for metastore (metastore service not defined in cluster definition (yml) file."
 end
@@ -63,7 +63,7 @@ for d in tmp_dirs
     action :create_as_superuser
     owner node.hive2.user
     group node.hive2.group
-    mode "1770"
+    mode "1775"
     not_if ". #{node.hops.home}/sbin/set-env.sh && #{node.hops.home}/bin/hdfs dfs -test -d #{d}"
   end
 end

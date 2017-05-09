@@ -55,7 +55,7 @@ hops_hdfs_directory node.tez.hopsfs_dir do
   action :create_as_superuser
   owner node.tez.user
   group node.tez.group
-  mode "1770"
+  mode "1777"
   not_if ". #{node.hops.home}/sbin/set-env.sh && #{node.hops.home}/bin/hdfs dfs -test -d #{node.tez.hopsfs_dir}"
 end
 
@@ -64,6 +64,7 @@ bash 'upload-tez-hopsfs' do
   group node.hops.group
   code <<-EOH
     #{node.hops.home}/sbin/set-env.sh && #{node.hops.home}/bin/hdfs dfs -copyFromLocal #{cached_package_filename} #{node.tez.hopsfs_dir}
+    #{node.hops.home}/sbin/set-env.sh && #{node.hops.home}/bin/hdfs dfs -chmod 777 #{node.tez.hopsfs_dir}/#{base_package_filename}
   EOH
   not_if ". #{node.hops.home}/sbin/set-env.sh && #{node.hops.home}/bin/hdfs dfs -test -f #{node.tez.hopsfs_dir}/#{base_package_filename}"
 end
