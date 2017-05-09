@@ -139,7 +139,7 @@ template "#{node.hive2.base_dir}/bin/wiper.sh" do
   mode 0755
 end
 
-# FIXME: currently not working.
+# Install Tez
 group node.tez.group do
   action :create
   not_if "getent group #{node.tez.group}"
@@ -178,8 +178,9 @@ bash 'extract-tez' do
         group node.tez.group
         code <<-EOH
                 set -e
-                tar zxf #{cached_package_filename} -C /tmp
-                mv /tmp/apache-tez-#{node.tez.version}-bin #{node.tez.dir}
+                mkdir /tmp/apache-tez-#{node.tez.version}
+                tar zxf #{cached_package_filename} -C /tmp/apache-tez-#{node.tez.version}
+                mv /tmp/apache-tez-#{node.tez.version} #{node.tez.dir}
                 # remove old symbolic link, if any
                 rm -f #{node.tez.base_dir}
                 ln -s #{node.tez.home} #{node.tez.base_dir}
@@ -191,3 +192,19 @@ bash 'extract-tez' do
      not_if { ::File.exists?( "#{tez_downloaded}" ) }
 end
 
+hops_hdfs_directory node.tez.hopsfs_dir do
+  action :create_as_superuser
+  owner node.tez.user
+  group node.tez.group
+  mode "1770"
+  not_if ". #{node.hops.home}/sbin/set-env.sh && #{node.hops.home}/bin/hdfs dfs -test -d #{node.tez.hopsfs_dir}"
+end
+
+bash 'upload-tez-hopsfs' do
+  user node.hops.hdfs.user
+  group node.hops.group
+  code <<-EOH
+    #{node.hops.home}/sbin/set-env.sh && #{node.hops.home}/bin/hdfs dfs -copyFromLocal #{cached_package_filename} #{node.tez.hopsfs_dir}
+  EOH
+  not_if ". #{node.hops.home}/sbin/set-env.sh && #{node.hops.home}/bin/hdfs dfs -test -f #{node.tez.hopsfs_dir}/#{base_package_filename}"
+end

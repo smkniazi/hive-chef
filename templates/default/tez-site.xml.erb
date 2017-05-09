@@ -25,7 +25,7 @@
   <property>
     <name>tez.dag.recovery.enabled</name>
     <defaultValue>true</defaultValue>
-    <description>Boolean value. Enable recovery of DAGs. This allows a restarted app master to recover the 
+    <description>Boolean value. Enable recovery of DAGs. This allows a restarted app master to recover the
  incomplete DAGs from the previous instance of the app master.</description>
     <type>boolean</type>
   </property>
@@ -104,9 +104,9 @@
     <name>tez.am.commit-all-outputs-on-dag-success</name>
     <defaultValue>true</defaultValue>
     <description>Boolean value. Determines when the final outputs to data sinks are committed. Commit is an
- output specific operation and typically involves making the output visible for consumption. 
- If the config is true, then the outputs are committed at the end of DAG completion after all 
- constituent vertices have completed. If false, outputs for each vertex are committed after that 
+ output specific operation and typically involves making the output visible for consumption.
+ If the config is true, then the outputs are committed at the end of DAG completion after all
+ constituent vertices have completed. If false, outputs for each vertex are committed after that
  vertex succeeds. Depending on the desired output visibility and downstream consumer dependencies
  this value must be appropriately chosen. Defaults to the safe choice of true.</description>
     <type>boolean</type>
@@ -129,7 +129,7 @@
  TezConfiguration#TEZ_AM_CONTAINER_IDLE_RELEASE_TIMEOUT_MIN_MILLIS.
  Containers will have an expire time set to a random value between
  TezConfiguration#TEZ_AM_CONTAINER_IDLE_RELEASE_TIMEOUT_MIN_MILLIS &amp;&amp;
- TezConfiguration#TEZ_AM_CONTAINER_IDLE_RELEASE_TIMEOUT_MAX_MILLIS. This 
+ TezConfiguration#TEZ_AM_CONTAINER_IDLE_RELEASE_TIMEOUT_MAX_MILLIS. This
  creates a graceful reduction in the amount of idle resources held</description>
     <type>long</type>
   </property>
@@ -137,7 +137,7 @@
   <property>
     <name>tez.am.container.idle.release-timeout-min.millis</name>
     <defaultValue>5000</defaultValue>
-    <description>Int value. The minimum amount of time to hold on to a container that is idle. Only active when 
+    <description>Int value. The minimum amount of time to hold on to a container that is idle. Only active when
  reuse is enabled. Set to -1 to never release idle containers (not recommended).</description>
     <type>integer</type>
   </property>
@@ -162,7 +162,7 @@
     <name>tez.am.container.reuse.non-local-fallback.enabled</name>
     <defaultValue>false</defaultValue>
     <description>Boolean value. Whether to reuse containers for non-local tasks. Active only if reuse is
- enabled. Turning this on can severely affect locality and can be bad for jobs with high data 
+ enabled. Turning this on can severely affect locality and can be bad for jobs with high data
  volume being read from the primary data sources.</description>
     <type>boolean</type>
   </property>
@@ -256,7 +256,7 @@
 
   <property>
     <name>tez.am.legacy.speculative.slowtask.threshold</name>
-    <description>Float value. Specifies how many standard deviations away from the mean task execution time 
+    <description>Float value. Specifies how many standard deviations away from the mean task execution time
  should be considered as an outlier/slow task.</description>
     <type>float</type>
     <unstable>true</unstable>
@@ -285,12 +285,12 @@
   <property>
     <name>tez.am.max.allowed.time-sec.for-read-error</name>
     <defaultValue>300</defaultValue>
-    <description>int value. Represents the maximum time in seconds for which a consumer attempt can report 
- a read error against its producer attempt, after which the producer attempt will be re-run 
- to re-generate the output. There are other heuristics which determine the retry and mainly 
- try to guard against a flurry of re-runs due to intermittent read errors 
+    <description>int value. Represents the maximum time in seconds for which a consumer attempt can report
+ a read error against its producer attempt, after which the producer attempt will be re-run
+ to re-generate the output. There are other heuristics which determine the retry and mainly
+ try to guard against a flurry of re-runs due to intermittent read errors
  (due to network issues). This configuration puts a time limit on those heuristics to ensure
- jobs dont hang indefinitely due to lack of closure in those heuristics 
+ jobs dont hang indefinitely due to lack of closure in those heuristics
 
  Expert level setting.</description>
     <type>integer</type>
@@ -299,8 +299,8 @@
   <property>
     <name>tez.am.max.app.attempts</name>
     <defaultValue>2</defaultValue>
-    <description>Int value. Specifies the number of times the app master can be launched in order to recover 
- from app master failure. Typically app master failures are non-recoverable. This parameter 
+    <description>Int value. Specifies the number of times the app master can be launched in order to recover
+ from app master failure. Typically app master failures are non-recoverable. This parameter
  is for cases where the app master is not at fault but is lost due to system errors.
  Expert level setting.</description>
     <type>integer</type>
@@ -318,7 +318,7 @@
     <description>String value.
  AM modify ACLs. This allows the specified users/groups to run modify operations on the AM
  such as submitting DAGs, pre-warming the session, killing DAGs or shutting down the session.
- Comma separated list of users, followed by whitespace, followed by a comma separated list of 
+ Comma separated list of users, followed by whitespace, followed by a comma separated list of
  groups</description>
     <type>string</type>
   </property>
@@ -326,7 +326,7 @@
   <property>
     <name>tez.am.node-blacklisting.enabled</name>
     <defaultValue>true</defaultValue>
-    <description>Boolean value. Enabled blacklisting of nodes of nodes that are considered faulty. These nodes 
+    <description>Boolean value. Enabled blacklisting of nodes of nodes that are considered faulty. These nodes
  will not be used to execute tasks.</description>
     <type>boolean</type>
   </property>
@@ -335,7 +335,7 @@
     <name>tez.am.node-blacklisting.ignore-threshold-node-percent</name>
     <defaultValue>33</defaultValue>
     <description>Int value. Specifies the percentage of nodes in the cluster that may be considered faulty.
- This limits the number of nodes that are blacklisted in an effort to minimize the effects of 
+ This limits the number of nodes that are blacklisted in an effort to minimize the effects of
  temporary surges in failures (e.g. due to network outages).</description>
     <type>integer</type>
   </property>
@@ -354,7 +354,7 @@
     <name>tez.am.preemption.heartbeats-between-preemptions</name>
     <defaultValue>3</defaultValue>
     <description>Int value. The number of RM heartbeats to wait after preempting running tasks before preempting
- more running tasks. After preempting a task, we need to wait at least 1 heartbeat so that the 
+ more running tasks. After preempting a task, we need to wait at least 1 heartbeat so that the
  RM can act on the released resources and assign new ones to us. Expert level setting.</description>
     <type>integer</type>
   </property>
@@ -363,8 +363,8 @@
     <name>tez.am.preemption.max.wait-time-ms</name>
     <defaultValue>60000</defaultValue>
     <description>Int value. Time (in millisecs) that an unsatisfied request will wait before preempting other
- resources. In rare cases, the cluster says there are enough free resources but does not end 
- up getting enough on a node to actually assign it to the job. This configuration tries to put 
+ resources. In rare cases, the cluster says there are enough free resources but does not end
+ up getting enough on a node to actually assign it to the job. This configuration tries to put
  a deadline on such wait to prevent indefinite job hangs.</description>
     <type>integer</type>
   </property>
@@ -408,7 +408,7 @@
   <property>
     <name>tez.am.session.min.held-containers</name>
     <defaultValue>0</defaultValue>
-    <description>Int value. The minimum number of containers that will be held in session mode. Not active in 
+    <description>Int value. The minimum number of containers that will be held in session mode. Not active in
  non-session mode. Enables an idle session (not running any DAG) to hold on to a minimum number
  of containers to provide fast response times for the next DAG.</description>
     <type>integer</type>
@@ -421,7 +421,7 @@
  code is written according to best practices then the same code can execute in either mode based
  on this configuration. Session mode is more aggressive in reserving execution resources and is
  typically used for interactive applications where multiple DAGs are submitted in quick succession
- by the same user. For long running applications, one-off executions, batch jobs etc non-session 
+ by the same user. For long running applications, one-off executions, batch jobs etc non-session
  mode is recommended. If session mode is enabled then container reuse is recommended.</description>
     <type>boolean</type>
   </property>
@@ -442,7 +442,7 @@
   <property>
     <name>tez.am.staging.scratch-data.auto-delete</name>
     <defaultValue>true</defaultValue>
-    <description>Boolean value. If true then Tez will try to automatically delete temporary job 
+    <description>Boolean value. If true then Tez will try to automatically delete temporary job
  artifacts that it creates within the specified staging dir. Does not affect any user data.</description>
     <type>boolean</type>
   </property>
@@ -458,7 +458,7 @@
   <property>
     <name>tez.am.task.max.failed.attempts</name>
     <defaultValue>4</defaultValue>
-    <description>Int value. The maximum number of attempts that can fail for a particular task before the task is failed. 
+    <description>Int value. The maximum number of attempts that can fail for a particular task before the task is failed.
  This does not count killed attempts. Task failure results in DAG failure.</description>
     <type>integer</type>
   </property>
@@ -491,10 +491,10 @@
 
   <property>
     <name>tez.am.view-acls</name>
-    <description>String value. 
+    <description>String value.
  AM view ACLs. This allows the specified users/groups to view the status of the AM and all DAGs
  that run within this AM.
- Comma separated list of users, followed by whitespace, followed by a comma separated list of 
+ Comma separated list of users, followed by whitespace, followed by a comma separated list of
  groups</description>
     <type>string</type>
   </property>
@@ -679,15 +679,6 @@
   </property>
 
   <property>
-    <name>tez.ignore.lib.uris</name>
-    <description>Boolean value. Allows to ignore &apos;tez.lib.uris&apos;. Useful during development as well as 
- raw Tez application where classpath is propagated with application
- via {@link LocalResource}s. This is mainly useful for developer/debugger scenarios.</description>
-    <type>boolean</type>
-    <unstable>true</unstable>
-  </property>
-
-  <property>
     <name>tez.ipc.payload.reserved.bytes</name>
     <defaultValue>5242880</defaultValue>
     <description>Int value. SubmitDAGPlanRequest cannot be larger than Max IPC message size minus this number; otherwise, it will
@@ -698,6 +689,7 @@
 
   <property>
     <name>tez.lib.uris</name>
+    <value>${fs.defaultFS}<%= node.tez.hopsfs_dir%>/apache-tez-<%= node.tez.version %>.tar.gz</value>
     <description>String value to a file path.
  The location of the Tez libraries which will be localized for DAGs.
  This follows the following semantics
@@ -724,7 +716,7 @@
     <name>tez.lib.uris.classpath</name>
     <description>Specify additional user classpath information to be used for Tez AM and all containers.
  This will be appended to the classpath after PWD
- 
+
  &apos;tez.lib.uris.classpath&apos; defines the relative classpath into the archives
  that are set in &apos;tez.lib.uris&apos;</description>
     <type>string</type>
@@ -756,15 +748,15 @@
     <name>tez.session.client.timeout.secs</name>
     <defaultValue>120</defaultValue>
     <description>Int value. Time (in seconds) to wait for AM to come up when trying to submit a DAG
- from the client. Only relevant in session mode. If the cluster is busy and cannot launch the 
- AM then this timeout may be hit. In those case, using non-session mode is recommended if 
+ from the client. Only relevant in session mode. If the cluster is busy and cannot launch the
+ AM then this timeout may be hit. In those case, using non-session mode is recommended if
  applicable. Otherwise increase the timeout (set to -1 for infinity. Not recommended)</description>
     <type>integer</type>
   </property>
 
   <property>
     <name>tez.simple.history.logging.dir</name>
-    <description>String value. The directory into which history data will be written. This defaults to the 
+    <description>String value. The directory into which history data will be written. This defaults to the
  container logging directory. This is relevant only when SimpleHistoryLoggingService is being
  used for {@link TezConfiguration#TEZ_HISTORY_LOGGING_SERVICE_CLASS}</description>
     <type>string</type>
@@ -781,8 +773,8 @@
   <property>
     <name>tez.task.am.heartbeat.counter.interval-ms.max</name>
     <defaultValue>4000</defaultValue>
-    <description>Int value. Interval, in milliseconds, after which counters are sent to AM in heartbeat from 
- tasks. This reduces the amount of network traffice between AM and tasks to send high-volume 
+    <description>Int value. Interval, in milliseconds, after which counters are sent to AM in heartbeat from
+ tasks. This reduces the amount of network traffice between AM and tasks to send high-volume
  counters. Improves AM scalability. Expert level setting.</description>
     <type>integer</type>
   </property>
@@ -790,7 +782,7 @@
   <property>
     <name>tez.task.am.heartbeat.interval-ms.max</name>
     <defaultValue>100</defaultValue>
-    <description>Int value. The maximum heartbeat interval, in milliseconds, between the app master and tasks. 
+    <description>Int value. The maximum heartbeat interval, in milliseconds, between the app master and tasks.
  Increasing this can help improve app master scalability for a large number of concurrent tasks.
  Expert level setting.</description>
     <type>integer</type>
@@ -811,7 +803,7 @@
     <name>tez.task.get-task.sleep.interval-ms.max</name>
     <defaultValue>200</defaultValue>
     <description>Int value. The maximum amount of time, in milliseconds, to wait before a task asks an
- AM for another task. Increasing this can help improve app master scalability for a large 
+ AM for another task. Increasing this can help improve app master scalability for a large
  number of concurrent tasks. Expert level setting.</description>
     <type>integer</type>
   </property>
@@ -914,10 +906,10 @@
   <property>
     <name>tez.task.progress.stuck.interval-ms</name>
     <defaultValue>-1</defaultValue>
-    <description>Long value. Interval, in milliseconds, within which any of the tasks Input/Processor/Output 
- components need to make successive progress notifications. If the progress is not notified 
+    <description>Long value. Interval, in milliseconds, within which any of the tasks Input/Processor/Output
+ components need to make successive progress notifications. If the progress is not notified
  for this interval then the task will be considered hung and terminated.
- The value for this config should be larger than {@link TezConfiguration#TASK_HEARTBEAT_TIMEOUT_MS} 
+ The value for this config should be larger than {@link TezConfiguration#TASK_HEARTBEAT_TIMEOUT_MS}
  and larger than 2 times the value of {@link TezConfiguration#TEZ_TASK_AM_HEARTBEAT_INTERVAL_MS}.
  A config value &lt;=0 disables this.</description>
     <type>string</type>
@@ -932,7 +924,7 @@
 
   <property>
     <name>tez.task.resource.cpu.vcores</name>
-    <defaultValue>1</defaultValue>
+    <defaultValue>2</defaultValue>
     <description>Int value. The number of virtual cores to be used by tasks.</description>
     <type>integer</type>
   </property>
@@ -941,7 +933,7 @@
     <name>tez.task.resource.memory.mb</name>
     <defaultValue>1024</defaultValue>
     <description>Int value. The amount of memory in MB to be used by tasks. This applies to all tasks across
- all vertices. Setting it to the same value for all tasks is helpful for container reuse and 
+ all vertices. Setting it to the same value for all tasks is helpful for container reuse and
  thus good for performance typically.</description>
     <type>integer</type>
   </property>
@@ -1055,7 +1047,7 @@
 
   <property>
     <name>tez.use.cluster.hadoop-libs</name>
-    <defaultValue>false</defaultValue>
+    <value>true</value>
     <description>Boolean value.
  Specify whether hadoop libraries required to run Tez should be the ones deployed on the cluster.
  This is disabled by default - with the expectation being that tez.lib.uris has a complete

@@ -32,14 +32,15 @@ default.hive2.hive_cleaner.pid_file  = "/tmp/hivecleaner.pid"
 
 default.hive2.hive_cleaner.libhdfs3 = "#{node.download_url}/hivecleaner/#{node.platform}/libhdfs3.tar.gz"
 
-default.tez.user                    = "tez"
-default.tez.group                   = node.hops.group
-default.tez.version                 = "0.8.4"
-default.tez.url                     = "#{node.download_url}/apache-tez-#{node.tez.version}-bin.tar.gz"
-default.tez.dir                     = "/srv"
-default.tez.home                    =  node.tez.dir + "/apache-tez-" + node.tez.version + "-bin"
+default.tez.user                    =  node.install.user.empty? ? "tez" : node.install.user
+default.tez.group                   =  node.hops.group
+default.tez.version                 = "0.8.5"
+default.tez.url                     = "#{node.download_url}/apache-tez-#{node.tez.version}.tar.gz"
+default.tez.dir                     =  node.install.dir.empty? ? "/srv" : node.install.dir
+default.tez.home                    =  node.tez.dir + "/apache-tez-" + node.tez.version
 default.tez.base_dir                =  node.tez.dir + "/apache-tez"
-
+default.tez.hopsfs_dir              = "/apps/tez/"
+default.tez.conf_dir                =  node.tez.base_dir + "/conf"
 
 default.hive2.metastore.public_ips                   = ['']
 default.hive2.metastore.private_ips                  = ['']
