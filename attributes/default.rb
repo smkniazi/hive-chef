@@ -39,7 +39,7 @@ default.tez.url                     = "#{node.download_url}/apache-tez-#{node.te
 default.tez.dir                     =  node.install.dir.empty? ? "/srv" : node.install.dir
 default.tez.home                    =  node.tez.dir + "/apache-tez-" + node.tez.version
 default.tez.base_dir                =  node.tez.dir + "/apache-tez"
-default.tez.hopsfs_dir              = "/apps/tez/"
+default.tez.hopsfs_dir              = "/apps/tez"
 default.tez.conf_dir                =  node.tez.base_dir + "/conf"
 
 default.hive2.metastore.public_ips                   = ['']
