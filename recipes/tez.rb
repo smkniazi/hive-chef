@@ -78,13 +78,19 @@ end
 
 # Set environment variables
 magic_shell_environment 'TEZ_CONF_DIR' do
+  owner node.hive2.user
+  group node.hive2.group
   value "#{node.tez.conf_dir}"
 end
 
 magic_shell_environment 'TEZ_JARS' do
+  owner node.hive2.user
+  group node.hive2.group
   value "#{node.tez.base_dir}"
 end
 
 magic_shell_environment 'HADOOP_CLASSPATH' do
+  owner node.hive2.user
+  group node.hive2.group
   value "$HADOOP_CLASSPATH:$TEZ_CONF_DIR:$TEZ_JARS/*:$TEZ_JARS/lib/*"
 end
