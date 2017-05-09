@@ -50,5 +50,10 @@ HADOOP_HOME=<%= node.hops.base_dir %>
 # Hive Configuration Directory can be controlled by:
 export HIVE_CONF_DIR=<%= node.hive2.base_dir %>/conf
 
+# Tez environment configuration
+TEZ_CONF_DIR=<%= node.tez.conf_dir %>
+TEZ_JARS=<%= node.tez.base_dir %>
+HADOOP_CLASSPATH=$HADOOP_CLASSPATH:$TEZ_CONF_DIR:$TEZ_JARS/*:$TEZ_JARS/lib/*
+
 # Folder containing extra libraries required for hive compilation/execution can be controlled by:
 # export HIVE_AUX_JARS_PATH=
