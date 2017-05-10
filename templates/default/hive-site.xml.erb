@@ -2200,7 +2200,7 @@
   </property>
   <property>
     <name>hive.tez.cpu.vcores</name>
-    <value>-1</value>
+    <value>2</value>
     <description>
       By default Tez will ask for however many cpus map-reduce is configured to use per container.
       This can be used to overwrite.
@@ -4235,17 +4235,17 @@
   </property>
   <property>
     <name>hive.server2.use.SSL</name>
-    <value>false</value>
+    <value>true</value>
     <description>Set this to true for using SSL encryption in HiveServer2.</description>
   </property>
   <property>
     <name>hive.server2.keystore.path</name>
-    <value/>
+    <value><%= node.kagent.keystore_dir%>/<%= node.hostname %>__kstore.jks</value>
     <description>SSL certificate keystore location.</description>
   </property>
   <property>
     <name>hive.server2.keystore.password</name>
-    <value/>
+    <value><%= node.hopsworks.master.password %></value>
     <description>SSL certificate keystore password.</description>
   </property>
   <property>
@@ -4474,7 +4474,7 @@
   </property>
   <property>
     <name>hive.execution.engine</name>
-    <value>mr</value>
+    <value>tez</value>
     <description>
       Expects one of [mr, tez, spark].
       Chooses execution engine. Options are: mr (Map reduce, default), tez, spark. While MR
@@ -4500,7 +4500,7 @@
   </property>
   <property>
     <name>hive.user.install.directory</name>
-    <value>/user/</value>
+    <value>/tmp/</value>
     <description>
       If hive (in tez mode only) cannot find a usable hive jar in "hive.jar.directory",
       it will upload the hive jar to "hive.user.install.directory/user.name"
