@@ -77,6 +77,10 @@ attribute "hive2/metastore/private_ips",
           :description => "Set ip addresses",
           :type => "array"
 
+attribute "hive2/default/private_ips",
+          :description => "Set ip addresses",
+          :type => "array"
+
 attribute "hive2/server2/private_ips",
           :description => "Set ip addresses",
           :type => "array"

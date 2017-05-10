@@ -41,8 +41,9 @@ default.tez.home                    =  node.tez.dir + "/apache-tez-" + node.tez.
 default.tez.base_dir                =  node.tez.dir + "/apache-tez"
 
 
-default.hive2.metastore.public_ips                   = ['']
-default.hive2.metastore.private_ips                  = ['']
-default.hive2.server2.public_ips                     = ['']
-default.hive2.server2.private_ips                    = ['']
-
+#default.hive2.metastore.public_ips                   = ['']
+#default.hive2.metastore.private_ips                  = ['']
+#default.hive2.server2.public_ips                     = ['']
+#default.hive2.server2.private_ips                    = ['']
+#default.hive2['default']['public_ips']               = ['']
+#default.hive2['default']['private_ips']              = ['']
