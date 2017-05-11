@@ -26,12 +26,13 @@ end
 cleaner_downloaded = "#{node.hive2.home}/.cleaner_extracted_#{node.hive2.hive_cleaner.version}"
 
 bash 'extract-cleaner' do
-        user node.hops.hdfs.user
+        user "root" 
         group node.hops.group
         code <<-EOH
                 set -e
                 tar zxf #{cached_package_filename} -C /tmp
                 mv /tmp/hivecleaner-#{node.hive2.hive_cleaner.version}/hive_cleaner #{node.hive2.base_dir}/bin/
+                chown -R #{node.hops.hdfs.user} #{node.hive2.base_dir}/bin/
                 touch #{cleaner_downloaded}
         EOH
      not_if { ::File.exists?( "#{cleaner_downloaded}" ) }
