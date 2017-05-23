@@ -26,7 +26,7 @@ end
 cleaner_downloaded = "#{node.hive2.home}/.cleaner_extracted_#{node.hive2.hive_cleaner.version}"
 
 bash 'extract-cleaner' do
-        user "root" 
+        user "root"
         group node.hops.group
         code <<-EOH
                 set -e
@@ -98,7 +98,7 @@ cookbook_file "#{node.hive2.base_dir}/lib/mysql-connector-java-5.1.40-bin.jar" d
   mode "0644"
 end
 
-hive_dir="#{home}/"
+hive_dir="#{home}"
 tmp_dirs   = [ hive_dir, hive_dir + "/warehouse" ]
 for d in tmp_dirs
   hops_hdfs_directory d do
@@ -109,6 +109,15 @@ for d in tmp_dirs
     not_if ". #{node.hops.home}/sbin/set-env.sh && #{node.hops.home}/bin/hdfs dfs -test -d #{d}"
   end
 end
+
+# Directory for tez's staging dirs
+hops_hdfs_directory "/tmp/hive" do
+    action :create_as_superuser
+    owner node.hive2.user
+    group node.hive2.group
+    mode "1777"
+    not_if ". #{node.hops.home}/sbin/set-env.sh && #{node.hops.home}/bin/hdfs dfs -test -d #{d}"
+  end
 
 file "#{node.hive2.base_dir}/conf/hive-site.xml" do
   action :delete

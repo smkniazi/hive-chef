@@ -81,7 +81,7 @@
   </property>
   <property>
     <name>hive.downloaded.resources.dir</name>
-    <value>/tmp/${hive.session.id}_resources</value>
+    <value>/tmp/hive/${hive.session.id}_resources</value>
     <description>Temporary local directory for added resources in the remote file system.</description>
   </property>
   <property>
@@ -4500,7 +4500,7 @@
   </property>
   <property>
     <name>hive.user.install.directory</name>
-    <value>/tmp/</value>
+    <value>/tmp/hive</value>
     <description>
       If hive (in tez mode only) cannot find a usable hive jar in "hive.jar.directory",
       it will upload the hive jar to "hive.user.install.directory/user.name"
