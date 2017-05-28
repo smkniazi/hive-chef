@@ -75,6 +75,12 @@ magic_shell_environment 'HADOOP_HOME' do
   value "#{node.hops.base_dir}"
 end
 
+magic_shell_environment 'CLASSPATH' do
+  user node.hops.hdfs.user
+  group node.hops.group
+  value "$CLASSPATH:${#{node.hops.base_dir}/bin/hadoop classpath -glob}"
+end
+
 magic_shell_environment 'HIVE_HOME' do
   value "#{node.hive2.base_dir}"
 end

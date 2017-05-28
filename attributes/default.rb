@@ -25,12 +25,10 @@ default.hive2.metastore.port         = "9083"
 default.hive2.server2.log              = "#{node.hive2.base_dir}/hive-server2.log"
 default.hive2.systemd                 = "true"
 
-default.hive2.hive_cleaner.version   = "0.1.1"
+default.hive2.hive_cleaner.version   = "0.1.2"
 default.hive2.hive_cleaner.url       = "#{node.download_url}/hivecleaner/#{node.platform}/hivecleaner-#{node.hive2.hive_cleaner.version}.tar.gz"
 default.hive2.hive_cleaner.log       = "#{node.hive2.base_dir}/hive-cleaner.log"
 default.hive2.hive_cleaner.pid_file  = "/tmp/hivecleaner.pid"
-
-default.hive2.hive_cleaner.libhdfs3 = "#{node.download_url}/hivecleaner/#{node.platform}/libhdfs3.tar.gz"
 
 default.tez.user                    =  node.install.user.empty? ? "tez" : node.install.user
 default.tez.group                   =  node.hops.group
