@@ -5,9 +5,10 @@ After = syslog.target network.target remote-fs.target
 [Service]
 User = <%= node.hops.hdfs.user %>
 
+EnvironmentFile=/etc/environment
 ExecStart = <%= node.hive2.base_dir %>/bin/hive_cleaner --connection <%= node.ndb.ip %>:<%= node.ndb.mgmd.port %> --database metastore
-LimitNOFILE = 20000
 
+LimitNOFILE = 20000
 Type = simple
 
 [Install]

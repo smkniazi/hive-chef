@@ -8,8 +8,6 @@ zk_endpoints = zk_ips.join(",")
 
 mysql_endpoint = private_recipe_ip("ndb", "mysqld") + ":#{node.ndb.mysql_port}"
 
-
-
 # Download Hive cleaner
 package_url = "#{node.hive2.hive_cleaner.url}"
 base_package_filename = File.basename(package_url)
@@ -73,12 +71,6 @@ home = "/user/" + node.hive2.user
 
 magic_shell_environment 'HADOOP_HOME' do
   value "#{node.hops.base_dir}"
-end
-
-magic_shell_environment 'CLASSPATH' do
-  user node.hops.hdfs.user
-  group node.hops.group
-  value "$CLASSPATH:${#{node.hops.base_dir}/bin/hadoop classpath -glob}"
 end
 
 magic_shell_environment 'HIVE_HOME' do

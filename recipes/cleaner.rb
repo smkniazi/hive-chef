@@ -1,3 +1,11 @@
+bash 'cleaner-classpath'  do
+  user 'root'
+  code <<-EOH
+    CLASSPATH=$(#{node.hops.base_dir}/bin/hadoop classpath --glob)
+    printf "CLASSPATH=%s" "$CLASSPATH" >> /etc/environment
+  EOH
+end
+
 service_name="hivecleaner"
 case node.platform_family
 when "rhel"
