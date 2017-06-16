@@ -1,5 +1,5 @@
 template "/etc/environment_cleaner" do
-  source "environmnent_cleaner.erb"
+  source "environment_cleaner.erb"
   owner "root"
   group "root"
   mode 0664
