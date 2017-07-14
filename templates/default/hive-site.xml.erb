@@ -3991,7 +3991,7 @@
   </property>
   <property>
     <name>hive.server2.thrift.http.cookie.auth.enabled</name>
-    <value>true</value>
+    <value>false</value>
     <description>When true, HiveServer2 in HTTP transport mode, will use cookie based authentication mechanism.</description>
   </property>
   <property>
@@ -4026,6 +4026,11 @@
     <name>hive.server2.thrift.port</name>
     <value><%= node.hive2.port %></value>
     <description>Port number of HiveServer2 Thrift interface when hive.server2.transport.mode is 'binary'.</description>
+  </property>
+ <property>
+    <name>hive.server2.thrift.port.ssl</name>
+    <value><%= node.hive2.port.ssl %></value>
+    <description>Port number of HiveServer2 Thrift interface when hive.server2.transport.mode is 'binary'. SSL</description>
   </property>
   <property>
     <name>hive.server2.thrift.sasl.qop</name>
@@ -4133,9 +4138,8 @@
   </property>
   <property>
     <name>hive.server2.authentication</name>
-    <value>NOSASL</value>
+    <value>HOPS</value>
     <description>
-      Expects one of [nosasl, none, ldap, kerberos, pam, custom].
       Client authentication types.
         NONE: no authentication check
         LDAP: LDAP/AD based authentication
@@ -4143,6 +4147,8 @@
         CUSTOM: Custom authentication provider
                 (Use with property hive.server2.custom.authentication.class)
         PAM: Pluggable authentication module
+        CERTIFICATE: Authenticate using client certificate
+        HOPS: Hops auth - certificate + username + password
         NOSASL:  Raw transport
     </description>
   </property>
@@ -4247,6 +4253,16 @@
     <name>hive.server2.keystore.password</name>
     <value><%= node.hopsworks.master.password %></value>
     <description>SSL certificate keystore password.</description>
+  </property>
+  <property>
+    <name>hive.server2.truststore.path</name>
+    <value><%= node.kagent.truststore_dir%>/<%= node.hostname %>__tstore.jks</value>
+    <description>SSL certificate truststore location.</description>
+  </property>
+  <property>
+    <name>hive.server2.truststore.password</name>
+    <value><%= node.hopsworks.master.password %></value>
+    <description>SSL certificate truststore password.</description>
   </property>
   <property>
     <name>hive.server2.map.fair.scheduler.queue</name>
