@@ -59,14 +59,12 @@ hops_hdfs_directory node.tez.hopsfs_dir do
   not_if ". #{node.hops.home}/sbin/set-env.sh && #{node.hops.home}/bin/hdfs dfs -test -d #{node.tez.hopsfs_dir}"
 end
 
-bash 'upload-tez-hopsfs' do
-  user node.hops.hdfs.user
+hops_hdfs_directory cached_package_filename do
+  action :put_as_superuser
+  owner node.hops.hdfs.user
   group node.hops.group
-  code <<-EOH
-    #{node.hops.home}/sbin/set-env.sh && #{node.hops.home}/bin/hdfs dfs -copyFromLocal #{cached_package_filename} #{node.tez.hopsfs_dir}
-    #{node.hops.home}/sbin/set-env.sh && #{node.hops.home}/bin/hdfs dfs -chmod 775 #{node.tez.hopsfs_dir}/#{base_package_filename}
-  EOH
-  not_if ". #{node.hops.home}/sbin/set-env.sh && #{node.hops.home}/bin/hdfs dfs -test -f #{node.tez.hopsfs_dir}/#{base_package_filename}"
+  dest "#{node.tez.hopsfs_dir}/#{base_package_filename}"
+  mode "775"
 end
 
 # Create configuration file
