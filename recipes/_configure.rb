@@ -8,6 +8,13 @@ zk_endpoints = zk_ips.join(",")
 
 mysql_endpoint = private_recipe_ip("ndb", "mysqld") + ":#{node.ndb.mysql_port}"
 
+# Logging
+directory "#{node.hive2.logs_dir}" do
+  owner node.hive2.user
+  group node.hive2.group
+  action :create
+end
+
 # Download Hive cleaner
 package_url = "#{node.hive2.hive_cleaner.url}"
 base_package_filename = File.basename(package_url)
@@ -66,9 +73,6 @@ rescue
   Chef::Log.warn "Using default ip for metastore (metastore service not defined in cluster definition (yml) file."
 end
 
-
-home = "/user/" + node.hive2.user
-
 magic_shell_environment 'HADOOP_HOME' do
   value "#{node.hops.base_dir}"
 end
@@ -96,8 +100,7 @@ cookbook_file "#{node.hive2.base_dir}/lib/mysql-connector-java-5.1.40-bin.jar" d
   mode "0644"
 end
 
-hive_dir="#{home}"
-tmp_dirs   = [ hive_dir, hive_dir + "/warehouse" ]
+tmp_dirs   = [ node.hive2.hopsfs_dir , node.hive2.hopsfs_dir + "/warehouse" ]
 for d in tmp_dirs
   hops_hdfs_directory d do
     action :create_as_superuser
@@ -132,8 +135,7 @@ template "#{node.hive2.base_dir}/conf/hive-site.xml" do
               :nn_endpoint => nn_endpoint,
               :mysql_endpoint => mysql_endpoint,
               :metastore_ip => metastore_ip,
-              :zk_endpoints => zk_endpoints,
-              :hive_hdfs_home => hive_dir
+              :zk_endpoints => zk_endpoints
             })
 end
 

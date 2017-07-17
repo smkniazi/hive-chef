@@ -223,7 +223,7 @@
   </property>
   <property>
     <name>hive.exec.parallel</name>
-    <value>false</value>
+    <value>true</value>
     <description>Whether to execute jobs in parallel</description>
   </property>
   <property>
@@ -367,7 +367,7 @@
   </property>
   <property>
     <name>hive.metastore.warehouse.dir</name>
-    <value>hdfs://<%= @nn_endpoint %><%= @hive_hdfs_home %>/warehouse</value>
+    <value>hdfs://<%= @nn_endpoint %><%= node.hive2.hopsfs_dir %>/warehouse</value>
     <description>location of default database for the warehouse</description>
   </property>
   <property>
@@ -1681,7 +1681,7 @@
   </property>
   <property>
     <name>hive.querylog.location</name>
-    <value>/tmp/<%= node.hive2.user %></value>
+    <value><%= node.hive2.logs_dir %></value>
     <description>Location of Hive run time structured log file</description>
   </property>
   <property>
@@ -3777,7 +3777,7 @@
   </property>
   <property>
     <name>hive.driver.parallel.compilation</name>
-    <value>false</value>
+    <value>true</value>
     <description>
       Whether to
       enable parallel compilation of the queries between sessions and within the same session on HiveServer2. The default is false.
@@ -3927,7 +3927,7 @@
   </property>
   <property>
     <name>hive.server2.logging.operation.log.location</name>
-    <value>/tmp/<%= node.hive2.user %>/operation_logs</value>
+    <value><%= node.hive2.logs_dir %>/operation_logs</value>
     <description>Top level directory where operation logs are stored if logging functionality is enabled</description>
   </property>
   <property>

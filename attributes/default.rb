@@ -13,23 +13,19 @@ default.hive2.portssl                 = "9085"
 default.hive2.dir                     = node.install.dir.empty? ? "/srv" : node.install.dir
 default.hive2.home                    = node.hive2.dir + "/apache-hive-" + node.hive2.version + "-bin"
 default.hive2.base_dir                = node.hive2.dir + "/apache-hive"
+default.hive2.logs_dir                = node.hive2.base_dir + "/logs"
+default.hive2.hopsfs_dir              = "/apps/hive"
 default.hive2.keystore                = "#{node.kagent.base_dir}/node_server_keystore.jks"
 default.hive2.keystore_password       = "changeit"
 
 default.hive2.mysql_user              = "hive"
 default.hive2.mysql_password          = "hive"
 
-default.hive2.server2.pid_file        = "/tmp/hiveserver2.pid"
-default.hive2.metastore.pid_file      = "/tmp/hivemetastore.pid"
-default.hive2.metastore.log           = "#{node.hive2.base_dir}/hive-metastore.log"
 default.hive2.metastore.port         = "9083"
-default.hive2.server2.log              = "#{node.hive2.base_dir}/hive-server2.log"
 default.hive2.systemd                 = "true"
 
 default.hive2.hive_cleaner.version   = "0.1.2"
 default.hive2.hive_cleaner.url       = "#{node.download_url}/hivecleaner/#{node.platform}/hivecleaner-#{node.hive2.hive_cleaner.version}.tar.gz"
-default.hive2.hive_cleaner.log       = "#{node.hive2.base_dir}/hive-cleaner.log"
-default.hive2.hive_cleaner.pid_file  = "/tmp/hivecleaner.pid"
 
 default.tez.user                    =  node.install.user.empty? ? "tez" : node.install.user
 default.tez.group                   =  node.hops.group
