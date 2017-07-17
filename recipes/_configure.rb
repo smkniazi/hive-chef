@@ -15,6 +15,14 @@ directory "#{node.hive2.logs_dir}" do
   action :create
 end
 
+template "#{node.hive2.base_dir}/conf/hive-log4j2.properties" do
+  source "hive-log4j2.properties.erb"
+  owner node.hive2.user
+  group node.hive2.group
+  mode 0655
+end
+
+
 endpoint = "http"
 if node["install"].attribute?("ssl") == true
   if node["install"]["ssl"] == "true"
