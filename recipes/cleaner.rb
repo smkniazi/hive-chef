@@ -79,11 +79,3 @@ end
 kagent_config "reload_#{service_name}" do
   action :systemd_reload
 end
-
-if node.kagent.enabled == "true"
-  kagent_config service_name do
-    service service_name
-    log_file node.hive2.metastore.log
-  end
-end
-
