@@ -2,7 +2,6 @@ include_attribute "kagent"
 include_attribute "ndb"
 include_attribute "hops"
 include_attribute "kzookeeper"
-include_attribute "hopsworks"
 
 default.hive2.user                    = node.install.user.empty? ? "hive" : node.install.user
 default.hive2.group                   = node.install.user.empty? ? node.hops.group : node.install.user
@@ -23,6 +22,8 @@ default.hive2.mysql_password          = "hive"
 
 default.hive2.metastore.port         = "9083"
 default.hive2.systemd                 = "true"
+
+default.hive2.hopsworks.port         = "8080"
 
 default.hive2.hive_cleaner.version   = "0.1.2"
 default.hive2.hive_cleaner.url       = "#{node.download_url}/hivecleaner/#{node.platform}/hivecleaner-#{node.hive2.hive_cleaner.version}.tar.gz"

@@ -30,8 +30,21 @@ if node["install"].attribute?("ssl") == true
   end
 end
 
+hopsworks_endpoint =
 
-hopsworks_endpoint = "#{endpoint}://" + private_recipe_ip("hopsworks", "default") + ":#{node.hopsworks.port}"
+if node.attribute? "hopsworks"
+  begin
+    if node["hopsworks"].attribute? "port"
+      hopsworks_endpoint = "#{endpoint}://" + private_recipe_ip("hopsworks", "default") + ":" + node["hopsworks"]["port"]
+    else
+      hopsworks_endpoint = "#{endpoint}://" + private_recipe_ip("hopsworks", "default") + ":" + node["hive2"]["hopsworks"]["port"]
+    end
+  rescue
+    dashboard_endpoint =
+    Chef::Log.warn "could not find the hopsworks server ip to register kagent to!"
+  end
+end
+
 
 begin
   metastore_ip = private_recipe_ip("hive2", "metastore")
