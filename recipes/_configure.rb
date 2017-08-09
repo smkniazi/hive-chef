@@ -86,7 +86,7 @@ for d in tmp_dirs
     action :create_as_superuser
     owner node.hive2.user
     group node.hive2.group
-    mode "1775"
+    mode "1751"
     not_if ". #{node.hops.home}/sbin/set-env.sh && #{node.hops.home}/bin/hdfs dfs -test -d #{d}"
   end
 end
