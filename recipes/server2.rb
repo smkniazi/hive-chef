@@ -23,10 +23,9 @@ template systemd_script do
   if node.services.enabled == "true"
     notifies :enable, resources(:service => service_name)
   end
-  notifies :start, resources(:service => service_name), :immediately
 end
 
-kagent_config "reload_#{service_name}" do
+kagent_config service_name do
   action :systemd_reload
 end
 
