@@ -47,6 +47,7 @@ bash 'extract-hive' do
                 rm -f #{node.hive2.base_dir}
                 ln -s #{node.hive2.home} #{node.hive2.base_dir}
                 chown -R #{node.hive2.user}:#{node.hive2.group} #{node.hive2.home}
+                chmod 770 #{node.hive2.home}
                 chown -R #{node.hive2.user}:#{node.hive2.group} #{node.hive2.base_dir}
                 touch #{hive_downloaded}
                 chown -R #{node.hive2.user}:#{node.hive2.group} #{hive_downloaded}
