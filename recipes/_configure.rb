@@ -1,31 +1,31 @@
 #include_recipe "hops::wrap"
 
 my_ip = my_private_ip()
-nn_endpoint = private_recipe_ip("hops", "nn") + ":#{node.hops.nn.port}"
+nn_endpoint = private_recipe_ip("hops", "nn") + ":#{node['hops']['nn']['port']}"
 
 zk_ips = private_recipe_ips('kzookeeper', 'default')
 zk_endpoints = zk_ips.join(",")
 
-mysql_endpoint = private_recipe_ip("ndb", "mysqld") + ":#{node.ndb.mysql_port}"
+mysql_endpoint = private_recipe_ip("ndb", "mysqld") + ":#{node['ndb']['mysql_port']}"
 
 # Logging
-directory "#{node.hive2.logs_dir}" do
-  owner node.hive2.user
-  group node.hive2.group
+directory "#{node['hive2']['logs_dir']}" do
+  owner node['hive2']['user']
+  group node['hive2']['group']
   action :create
 end
 
-template "#{node.hive2.base_dir}/conf/hive-log4j2.properties" do
+template "#{node['hive2']['base_dir']}/conf/hive-log4j2.properties" do
   source "hive-log4j2.properties.erb"
-  owner node.hive2.user
-  group node.hive2.group
+  owner node['hive2']['user']
+  group node['hive2']['group']
   mode 0655
 end
 
 
 endpoint = "http"
-if node["install"].attribute?("ssl") == true
-  if node["install"]["ssl"] == "true"
+if node['install'].attribute?("ssl") == true
+  if node['install']['ssl'] == "true"
     endpoint = "https"
   end
 end
@@ -34,10 +34,10 @@ hopsworks_endpoint =
 
 if node.attribute? "hopsworks"
   begin
-    if node["hopsworks"].attribute? "port"
-      hopsworks_endpoint = "#{endpoint}://" + private_recipe_ip("hopsworks", "default") + ":" + node["hopsworks"]["port"]
+    if node['hopsworks'].attribute? "port"
+      hopsworks_endpoint = "#{endpoint}://" + private_recipe_ip("hopsworks", "default") + ":" + node['hopsworks']['port']
     else
-      hopsworks_endpoint = "#{endpoint}://" + private_recipe_ip("hopsworks", "default") + ":" + node["hive2"]["hopsworks"]["port"]
+      hopsworks_endpoint = "#{endpoint}://" + private_recipe_ip("hopsworks", "default") + ":" + node['hive2']['hopsworks']['port']
     end
   rescue
     dashboard_endpoint =
@@ -54,15 +54,15 @@ rescue
 end
 
 magic_shell_environment 'HADOOP_HOME' do
-  value "#{node.hops.base_dir}"
+  value "#{node['hops']['base_dir']}"
 end
 
 magic_shell_environment 'HIVE_HOME' do
-  value "#{node.hive2.base_dir}"
+  value "#{node['hive2']['base_dir']}"
 end
 
 magic_shell_environment 'PATH' do
-  value "$PATH:#{node.hops.base_dir}/bin:#{node.hive2.base_dir}/bin"
+  value "$PATH:#{node['hops']['base_dir']}/bin:#{node['hive2']['base_dir']}/bin"
 end
 
 #
@@ -73,41 +73,41 @@ end
 # http://www.toadworld.com/platforms/oracle/w/wiki/11427.using-mysql-database-as-apache-hive-metastore-database
 #
 
-cookbook_file "#{node.hive2.base_dir}/lib/mysql-connector-java-5.1.40-bin.jar" do
+cookbook_file "#{node['hive2']['base_dir']}/lib/mysql-connector-java-5.1.40-bin.jar" do
   source "mysql-connector-java-5.1.40-bin.jar"
-  owner node.hive2.user
-  group node.hops.group
+  owner node['hive2']['user']
+  group node['hops']['group']
   mode "0644"
 end
 
-tmp_dirs   = [ node.hive2.hopsfs_dir , node.hive2.hopsfs_dir + "/warehouse" ]
+tmp_dirs   = [ node['hive2']['hopsfs_dir'] , node['hive2']['hopsfs_dir'] + "/warehouse" ]
 for d in tmp_dirs
   hops_hdfs_directory d do
     action :create_as_superuser
-    owner node.hive2.user
-    group node.hive2.group
+    owner node['hive2']['user']
+    group node['hive2']['group']
     mode "1751"
-    not_if ". #{node.hops.home}/sbin/set-env.sh && #{node.hops.home}/bin/hdfs dfs -test -d #{d}"
+    not_if ". #{node['hops']['home']}/sbin/set-env.sh && #{node['hops']['home']}/bin/hdfs dfs -test -d #{d}"
   end
 end
 
 # Directory for tez's staging dirs
 hops_hdfs_directory "/tmp/hive" do
     action :create_as_superuser
-    owner node.hive2.user
-    group node.hive2.group
+    owner node['hive2']['user']
+    group node['hive2']['group']
     mode "1777"
-    not_if ". #{node.hops.home}/sbin/set-env.sh && #{node.hops.home}/bin/hdfs dfs -test -d #{d}"
+    not_if ". #{node['hops']['home']}/sbin/set-env.sh && #{node['hops']['home']}/bin/hdfs dfs -test -d #{d}"
   end
 
-file "#{node.hive2.base_dir}/conf/hive-site.xml" do
+file "#{node['hive2']['base_dir']}/conf/hive-site.xml" do
   action :delete
 end
 
-template "#{node.hive2.base_dir}/conf/hive-site.xml" do
+template "#{node['hive2']['base_dir']}/conf/hive-site.xml" do
   source "hive-site.xml.erb"
-  owner node.hive2.user
-  group node.hive2.group
+  owner node['hive2']['user']
+  group node['hive2']['group']
   mode 0655
   variables({
               :private_ip => my_ip,
@@ -119,24 +119,24 @@ template "#{node.hive2.base_dir}/conf/hive-site.xml" do
             })
 end
 
-file "#{node.hive2.base_dir}/conf/hiveserver2-site.xml" do
+file "#{node['hive2']['base_dir']}/conf/hiveserver2-site.xml" do
   action :delete
 end
 
-template "#{node.hive2.base_dir}/conf/hiveserver2-site.xml" do
+template "#{node['hive2']['base_dir']}/conf/hiveserver2-site.xml" do
   source "hiveserver2-site.xml.erb"
-  owner node.hive2.user
-  group node.hive2.group
+  owner node['hive2']['user']
+  group node['hive2']['group']
   mode 0655
 end
 
-file "#{node.hive2.base_dir}/conf/hive-env.sh" do
+file "#{node['hive2']['base_dir']}/conf/hive-env.sh" do
   action :delete
 end
 
-template "#{node.hive2.base_dir}/conf/hive-env.sh" do
+template "#{node['hive2']['base_dir']}/conf/hive-env.sh" do
   source "hive-env.sh.erb"
-  owner node.hive2.user
-  group node.hive2.group
+  owner node['hive2']['user']
+  group node['hive2']['group']
   mode 0655
 end

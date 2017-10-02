@@ -3,9 +3,9 @@ Description = Hive metaserver
 After = syslog.target network.target remote-fs.target
 
 [Service]
-User = <%= node.hive2.user %>
+User = <%= node['hive2']['user'] %>
 
-ExecStart = <%= node.hive2.base_dir %>/bin/hiveserver2
+ExecStart = <%= node['hive2']['base_dir'] %>/bin/hiveserver2
 LimitNOFILE = 20000
 
 Type = simple

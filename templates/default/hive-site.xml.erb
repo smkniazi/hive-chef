@@ -76,7 +76,7 @@
   </property>
   <property>
     <name>hive.exec.local.scratchdir</name>
-    <value>/tmp/<%= node.hive2.user %></value>
+    <value>/tmp/<%= node['hive2']['user'] %></value>
     <description>Local scratch space for Hive jobs</description>
   </property>
   <property>
@@ -367,12 +367,12 @@
   </property>
   <property>
     <name>hive.metastore.warehouse.dir</name>
-    <value>hdfs://<%= @nn_endpoint %><%= node.hive2.hopsfs_dir %>/warehouse</value>
+    <value>hdfs://<%= @nn_endpoint %><%= node['hive2']['hopsfs_dir'] %>/warehouse</value>
     <description>location of default database for the warehouse</description>
   </property>
   <property>
     <name>hive.metastore.uris</name>
-    <value>thrift://<%= @metastore_ip %>:<%= node.hive2.metastore.port %></value>
+    <value>thrift://<%= @metastore_ip %>:<%= node['hive2']['metastore']['port'] %></value>
     <description>Thrift URI for the remote metastore. Used by metastore client to connect to remote metastore.</description>
   </property>
   <property>
@@ -500,7 +500,7 @@
   </property>
   <property>
     <name>hive.metastore.port</name>
-    <value><%= node.hive2.metastore.port %></value>
+    <value><%= node['hive2']['metastore']['port'] %></value>
     <description>Hive metastore listener port</description>
   </property>
   <property>
@@ -531,7 +531,7 @@
   </property>
   <property>
     <name>javax.jdo.option.ConnectionPassword</name>
-    <value><%= node.hive2.mysql_password %></value>
+    <value><%= node['hive2']['mysql_password'] %></value>
     <description>password to use against metastore database</description>
   </property>
   <property>
@@ -1046,7 +1046,7 @@
   </property>
   <property>
     <name>javax.jdo.option.ConnectionUserName</name>
-    <value><%= node.hive2.mysql_user %></value>
+    <value><%= node['hive2']['mysql_user'] %></value>
     <description>Username to use against metastore database</description>
   </property>
   <property>
@@ -1681,7 +1681,7 @@
   </property>
   <property>
     <name>hive.querylog.location</name>
-    <value><%= node.hive2.logs_dir %></value>
+    <value><%= node['hive2']['logs_dir'] %></value>
     <description>Location of Hive run time structured log file</description>
   </property>
   <property>
@@ -3756,7 +3756,7 @@
   </property>
   <property>
     <name>hive.server2.global.init.file.location</name>
-    <value><%= node.hive2.base_dir %>/conf</value>
+    <value><%= node['hive2']['base_dir'] %>/conf</value>
     <description>
       Either the location of a HS2 global init file or a directory containing a .hiverc file. If the
       property is set, the value must be a valid path to an init file or directory where the init file is located.
@@ -3927,7 +3927,7 @@
   </property>
   <property>
     <name>hive.server2.logging.operation.log.location</name>
-    <value><%= node.hive2.logs_dir %>/operation_logs</value>
+    <value><%= node['hive2']['logs_dir'] %>/operation_logs</value>
     <description>Top level directory where operation logs are stored if logging functionality is enabled</description>
   </property>
   <property>
@@ -4024,12 +4024,12 @@
   </property>
   <property>
     <name>hive.server2.thrift.port</name>
-    <value><%= node.hive2.port %></value>
+    <value><%= node['hive2']['port'] %></value>
     <description>Port number of HiveServer2 Thrift interface when hive.server2.transport.mode is 'binary'.</description>
   </property>
  <property>
     <name>hive.server2.thrift.port.ssl</name>
-    <value><%= node.hive2.portssl %></value>
+    <value><%= node['hive2']['portssl'] %></value>
     <description>Port number of HiveServer2 Thrift interface when hive.server2.transport.mode is 'binary'. SSL</description>
   </property>
   <property>
@@ -4246,22 +4246,22 @@
   </property>
   <property>
     <name>hive.server2.keystore.path</name>
-    <value><%= node.kagent.keystore_dir%>/<%= node.hostname %>__kstore.jks</value>
+    <value><%= node['kagent']['keystore_dir']%>/<%= node['hostname'] %>__kstore.jks</value>
     <description>SSL certificate keystore location.</description>
   </property>
   <property>
     <name>hive.server2.keystore.password</name>
-    <value><%= node.hopsworks.master.password %></value>
+    <value><%= node['hopsworks']['master']['password'] %></value>
     <description>SSL certificate keystore password.</description>
   </property>
   <property>
     <name>hive.server2.truststore.path</name>
-    <value><%= node.kagent.keystore_dir %>/<%= node.hostname %>__tstore.jks</value>
+    <value><%= node['kagent']['keystore_dir'] %>/<%= node['hostname'] %>__tstore.jks</value>
     <description>SSL certificate truststore location.</description>
   </property>
   <property>
     <name>hive.server2.truststore.password</name>
-    <value><%= node.hopsworks.master.password %></value>
+    <value><%= node['hopsworks']['master']['password'] %></value>
     <description>SSL certificate truststore password.</description>
   </property>
   <property>

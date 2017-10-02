@@ -1,40 +1,40 @@
 # Download Hive cleaner
-package_url = "#{node.hive2.hive_cleaner.url}"
+package_url = "#{node['hive2']['hive_cleaner']['url']}"
 base_package_filename = File.basename(package_url)
 cached_package_filename = "/tmp/#{base_package_filename}"
 
 remote_file cached_package_filename do
   source package_url
-  owner node.hops.hdfs.user
-  group node.hops.group
+  owner node['hops']['hdfs']['user']
+  group node['hops']['group']
   mode "0644"
   action :create_if_missing
 end
 
-cleaner_downloaded = "#{node.hive2.home}/.cleaner_extracted_#{node.hive2.hive_cleaner.version}"
+cleaner_downloaded = "#{node['hive2']['home']}/.cleaner_extracted_#{node['hive2']['hive_cleaner']['version']}"
 
 bash 'extract-cleaner' do
         user "root"
-        group node.hops.group
+        group node['hops']['group']
         code <<-EOH
                 set -e
                 tar zxf #{cached_package_filename} -C /tmp
-                mv /tmp/hivecleaner-#{node.hive2.hive_cleaner.version}/hive_cleaner #{node.hive2.base_dir}/bin/
-                chown -R #{node.hops.hdfs.user} #{node.hive2.base_dir}/bin/
+                mv /tmp/hivecleaner-#{node['hive2']['hive_cleaner']['version']}/hive_cleaner #{node['hive2']['base_dir']}/bin/
+                chown -R #{node['hops']['hdfs']['user']} #{node['hive2']['base_dir']}/bin/
                 touch #{cleaner_downloaded}
         EOH
      not_if { ::File.exists?( "#{cleaner_downloaded}" ) }
 end
 
 #Add the wiper
-file "#{node.hive2.base_dir}/bin/wiper.sh" do
+file "#{node['hive2']['base_dir']}/bin/wiper.sh" do
   action :delete
 end
 
-template "#{node.hive2.base_dir}/bin/wiper.sh" do
+template "#{node['hive2']['base_dir']}/bin/wiper.sh" do
   source "wiper.sh.erb"
-  owner node.hops.hdfs.user
-  group node.hops.group
+  owner node['hops']['hdfs']['user']
+  group node['hops']['group']
   mode 0755
 end
 
@@ -47,7 +47,7 @@ template "/etc/environment_cleaner" do
 end
 
 service_name="hivecleaner"
-case node.platform_family
+case node['platform_family']
 when "rhel"
   systemd_script = "/usr/lib/systemd/system/#{service_name}.service"
 else
@@ -70,7 +70,7 @@ template systemd_script do
   variables({
             :mgmd_endpoint => ndb_mgmd_ip
            })
-  if node.services.enabled == "true"
+  if node['services']['enabled'] == "true"
     notifies :enable, resources(:service => service_name)
   end
 end

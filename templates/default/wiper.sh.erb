@@ -1,7 +1,7 @@
 #!/bin/bash
 
-NDB_SCRIPTS=<%= node.ndb.scripts_dir %>
-HADOOP_HOME=<%= node.hops.base_dir %>
+NDB_SCRIPTS=<%= node['ndb']['scripts_dir'] %>
+HADOOP_HOME=<%= node['hops']['base_dir'] %>
 
 # Delete SDSes which are not used by any DBS, TBLS, PARTITION or IDXS entry.
 echo "Deleting SDSes"

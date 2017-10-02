@@ -2,7 +2,7 @@ include_recipe "hive2::_configure"
 
 service_name="hiveserver2"
 
-case node.platform_family
+case node['platform_family']
 when "rhel"
   systemd_script = "/usr/lib/systemd/system/#{service_name}.service"
 else
@@ -20,7 +20,7 @@ template systemd_script do
   owner "root"
   group "root"
   mode 0754
-  if node.services.enabled == "true"
+  if node['services']['enabled'] == "true"
     notifies :enable, resources(:service => service_name)
   end
 end
@@ -29,10 +29,10 @@ kagent_config service_name do
   action :systemd_reload
 end
 
-if node.kagent.enabled == "true"
+if node['kagent']['enabled'] == "true"
   kagent_config service_name do
     service service_name
-    log_file node.hive2.logs_dir + "/hive.log"
+    log_file node['hive2']['logs_dir'] + "/hive.log"
   end
 end
 

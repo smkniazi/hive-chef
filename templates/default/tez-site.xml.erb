@@ -689,7 +689,7 @@
 
   <property>
     <name>tez.lib.uris</name>
-    <value>${fs.defaultFS}<%= node.tez.hopsfs_dir%>/apache-tez-<%= node.tez.version %>.tar.gz</value>
+    <value>${fs.defaultFS}<%= node['tez']['hopsfs_dir']%>/apache-tez-<%= node['tez']['version'] %>.tar.gz</value>
     <description>String value to a file path.
  The location of the Tez libraries which will be localized for DAGs.
  This follows the following semantics
