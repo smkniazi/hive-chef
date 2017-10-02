@@ -5,8 +5,8 @@ include_attribute "kzookeeper"
 
 default['hive2']['user']                    = node['install']['user'].empty? ? "hive" : node['install']['user']
 default['hive2']['group']                   = node['install']['user'].empty? ? node['hops']['group'] : node['install']['user']
-default['hive2']['version']                 = "2.2.0-SNAPSHOT"
-default['hive2']['url']                     = "#{node['download_url']}/apache-hive-#{node['hive2']['version']}-bin-dev.tar.gz"
+default['hive2']['version']                 = "2.3.0"
+default['hive2']['url']                     = "#{node['download_url']}/apache-hive-#{node['hive2']['version']}-bin.tar.gz"
 default['hive2']['port']                    = "9084"
 default['hive2']['portssl']                 = "9085"
 default['hive2']['dir']                     = node['install']['dir'].empty? ? "/srv" : node['install']['dir']
