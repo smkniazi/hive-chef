@@ -14,6 +14,7 @@ default['hive2']['home']                    = node['hive2']['dir'] + "/apache-hi
 default['hive2']['base_dir']                = node['hive2']['dir'] + "/apache-hive"
 default['hive2']['logs_dir']                = node['hive2']['base_dir'] + "/logs"
 default['hive2']['hopsfs_dir']              = "/apps/hive"
+default['hive2']['scratch_dir']              = "/tmp/hive"
 default['hive2']['keystore']                = "#{node['kagent']['base_dir']}/node_server_keystore.jks"
 default['hive2']['keystore_password']       = "changeit"
 
