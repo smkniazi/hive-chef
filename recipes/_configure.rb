@@ -80,7 +80,7 @@ cookbook_file "#{node['hive2']['base_dir']}/lib/mysql-connector-java-5.1.40-bin.
   mode "0644"
 end
 
-tmp_dirs   = [ node['hive2']['hopsfs_dir'] , node['hive2']['hopsfs_dir'] + "/warehouse" ]
+tmp_dirs   = [ node['hive2']['hopsfs_dir'] , node['hive2']['hopsfs_dir'] + "/warehouse", node['hive2']['scratch_dir'] ]
 for d in tmp_dirs
   hops_hdfs_directory d do
     action :create_as_superuser
