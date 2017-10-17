@@ -21,6 +21,11 @@ group node['hive2']['group'] do
   append true
 end
 
+group node['kagent']['certs_dir'] do
+  action :modify
+  members ["#{node['hive2']['user']}"]
+  append true
+end
 
 package_url = "#{node['hive2']['url']}"
 base_package_filename = File.basename(package_url)
