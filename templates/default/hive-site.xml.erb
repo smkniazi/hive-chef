@@ -630,19 +630,6 @@
     <description/>
   </property>
   <property>
-    <name>hive.metastore.kerberos.keytab.file</name>
-    <value/>
-    <description>The path to the Kerberos Keytab file containing the metastore Thrift server's service principal.</description>
-  </property>
-  <property>
-    <name>hive.metastore.kerberos.principal</name>
-    <value>hive-metastore/_HOST@EXAMPLE.COM</value>
-    <description>
-      The service principal for the metastore Thrift server.
-      The special string _HOST will be replaced automatically with the correct host name.
-    </description>
-  </property>
-  <property>
     <name>hive.metastore.sasl.enabled</name>
     <value>false</value>
     <description>If true, the metastore Thrift interface will be secured with SASL. Clients must authenticate with Kerberos.</description>
@@ -4153,43 +4140,6 @@
     <description>Allow alternate user to be specified as part of HiveServer2 open connection request.</description>
   </property>
   <property>
-    <name>hive.server2.authentication.kerberos.keytab</name>
-    <value/>
-    <description>Kerberos keytab file for server principal</description>
-  </property>
-  <property>
-    <name>hive.server2.authentication.kerberos.principal</name>
-    <value/>
-    <description>Kerberos server principal</description>
-  </property>
-  <property>
-    <name>hive.server2.authentication.spnego.keytab</name>
-    <value/>
-    <description>
-      keytab file for SPNego principal, optional,
-      typical value would look like /etc/security/keytabs/spnego.service.keytab,
-      This keytab would be used by HiveServer2 when Kerberos security is enabled and
-      HTTP transport mode is used.
-      This needs to be set only if SPNEGO is to be used in authentication.
-      SPNego authentication would be honored only if valid
-        hive.server2.authentication.spnego.principal
-      and
-        hive.server2.authentication.spnego.keytab
-      are specified.
-    </description>
-  </property>
-  <property>
-    <name>hive.server2.authentication.spnego.principal</name>
-    <value/>
-    <description>
-      SPNego service principal, optional,
-      typical value would look like HTTP/_HOST@EXAMPLE.COM
-      SPNego service principal would be used by HiveServer2 when Kerberos security is enabled
-      and HTTP transport mode is used.
-      This needs to be set only if SPNEGO is to be used in authentication.
-    </description>
-  </property>
-  <property>
     <name>hive.server2.custom.authentication.class</name>
     <value>org.apache.hive.service.auth.HopsAuthenticationProviderImpl</value>
     <description>
@@ -4645,14 +4595,6 @@
     <name>hive.typecheck.on.insert</name>
     <value>true</value>
     <description>This property has been extended to control whether to check, convert, and normalize partition value to conform to its column type in partition operations including but not limited to insert, such as alter, describe etc.</description>
-  </property>
-  <property>
-    <name>hive.hadoop.classpath</name>
-    <value/>
-    <description>
-      For Windows OS, we need to pass HIVE_HADOOP_CLASSPATH Java parameter while starting HiveServer2
-      using "-hiveconf hive.hadoop.classpath=%HIVE_LIB%".
-    </description>
   </property>
   <property>
     <name>hive.rpc.query.plan</name>
@@ -5124,79 +5066,11 @@
     <description>Specify the number of threads to use for low-level IO thread pool.</description>
   </property>
   <property>
-    <name>hive.llap.daemon.service.principal</name>
-    <value/>
-    <description>The name of the LLAP daemon's service principal.</description>
-  </property>
-  <property>
-    <name>hive.llap.daemon.keytab.file</name>
-    <value/>
-    <description>The path to the Kerberos Keytab file containing the LLAP daemon's service principal.</description>
-  </property>
-  <property>
-    <name>hive.llap.zk.sm.principal</name>
-    <value/>
-    <description>The name of the principal to use to talk to ZooKeeper for ZooKeeper SecretManager.</description>
-  </property>
-  <property>
-    <name>hive.llap.zk.sm.keytab.file</name>
-    <value/>
-    <description>
-      The path to the Kerberos Keytab file containing the principal to use to talk to
-      ZooKeeper for ZooKeeper SecretManager.
-    </description>
-  </property>
-  <property>
     <name>hive.llap.webui.spnego.keytab</name>
     <value/>
     <description>
       The path to the Kerberos Keytab file containing the LLAP WebUI SPNEGO principal.
       Typical value would look like /etc/security/keytabs/spnego.service.keytab.
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.webui.spnego.principal</name>
-    <value/>
-    <description>
-      The LLAP WebUI SPNEGO service principal. Configured similarly to
-      hive.server2.webui.spnego.principal
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.task.principal</name>
-    <value/>
-    <description>
-      The name of the principal to use to run tasks. By default, the clients are required
-      to provide tokens to access HDFS/etc.
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.task.keytab.file</name>
-    <value/>
-    <description>
-      The path to the Kerberos Keytab file containing the principal to use to run tasks.
-      By default, the clients are required to provide tokens to access HDFS/etc.
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.zk.sm.connectionString</name>
-    <value/>
-    <description>ZooKeeper connection string for ZooKeeper SecretManager.</description>
-  </property>
-  <property>
-    <name>hive.llap.zk.registry.user</name>
-    <value/>
-    <description>
-      In the LLAP ZooKeeper-based registry, specifies the username in the Zookeeper path.
-      This should be the hive user or whichever user is running the LLAP daemon.
-    </description>
-  </property>
-  <property>
-    <name>hive.llap.zk.registry.namespace</name>
-    <value/>
-    <description>
-      In the LLAP ZooKeeper-based registry, overrides the ZK path namespace. Note that
-      using this makes the path management (e.g. setting correct ACLs) your responsibility.
     </description>
   </property>
   <property>
