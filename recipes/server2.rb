@@ -31,7 +31,7 @@ end
 
 if node['kagent']['enabled'] == "true"
   kagent_config service_name do
-    service service_name
+    service "Hive"
     log_file node['hive2']['logs_dir'] + "/hive.log"
   end
 end
