@@ -59,3 +59,13 @@ bash 'extract-hive' do
         EOH
      not_if { ::File.exists?( "#{hive_downloaded}" ) }
 end
+
+# Install the mysql-jdbc connector
+remote_file "#{node['hive2']['base_dir']}/lib/mysql-connector-java-#{node['hive2']['mysql_connector_version']}-bin.jar" do
+  source node['hive2']['mysql_connector_url']
+  checksum node['hive2']['mysql_connector_checksum']
+  owner node['hive2']['user']
+  group node['hive2']['group']
+  mode '0755'
+  action :create_if_missing
+end
