@@ -20,6 +20,9 @@ default['hive2']['keystore_password']       = "changeit"
 
 default['hive2']['mysql_user']              = "hive"
 default['hive2']['mysql_password']          = "hive"
+default['hive2']['mysql_connector_version'] = "5.1.29"
+default['hive2']['mysql_connector_url']     = "#{node['download_url']}/mysql-connector-java-#{node['hive2']['mysql_connector_version']}-bin.jar"
+default['hive2']['mysql_connector_checksum'] = "32ddcf6d2613c79595f4f3fda01efb8620ea2bf50df954215c175ebec4cc67b9"
 
 default['hive2']['metastore']['port']       = "9083"
 default['hive2']['systemd']                 = "true"
