@@ -73,13 +73,6 @@ end
 # http://www.toadworld.com/platforms/oracle/w/wiki/11427.using-mysql-database-as-apache-hive-metastore-database
 #
 
-cookbook_file "#{node['hive2']['base_dir']}/lib/mysql-connector-java-5.1.40-bin.jar" do
-  source "mysql-connector-java-5.1.40-bin.jar"
-  owner node['hive2']['user']
-  group node['hops']['group']
-  mode "0644"
-end
-
 tmp_dirs = ["/user/#{node['hive2']['user']}", node['hive2']['hopsfs_dir'] , node['hive2']['hopsfs_dir'] + "/warehouse"]
 for d in tmp_dirs
   hops_hdfs_directory d do
