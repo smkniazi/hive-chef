@@ -1,15 +1,15 @@
 [Unit]
-Description = Hive metaserver
+Description = Hive cleaner
 After = syslog.target network.target remote-fs.target
 
 [Service]
 User = <%= node['hops']['hdfs']['user'] %>
 
-EnvironmentFile=/etc/environment_cleaner
-ExecStart = <%= node['hive2']['base_dir'] %>/bin/hive_cleaner --connection <%= @mgmd_endpoint %>:<%= node['ndb']['mgmd']['port'] %> &> <%= node['hive2']['logs_dir'] %>/hivecleaner.log
+PIDFile = <%= node['hive2']['hive_cleaner']['pid_file'] %>
+ExecStart = <%= node['hive2']['base_dir'] %>/bin/start-hivecleaner.sh
 
 LimitNOFILE = 20000
-Type = simple
+Type = forking
 
 [Install]
 WantedBy = multi-user.target

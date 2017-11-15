@@ -45,6 +45,7 @@
 
 
 # Set HADOOP_HOME to point to a specific hadoop install directory
+export JAVA_HOME=<%= node['java']['java_home'] %>
 export HADOOP_HOME=<%= node['hops']['base_dir'] %>
 export HADOOP_CONF_DIR=<%= node['hops']['base_dir'] %>/etc/hadoop
 
