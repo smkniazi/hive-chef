@@ -5582,16 +5582,6 @@
     <description>Log tracing id that can be used by upstream clients for tracking respective logs. Truncated to 64 characters. Defaults to use auto-generated session id.</description>
   </property>
   <property>
-    <name>hive.conf.restricted.list</name>
-    <value>hive.security.authenticator.manager,hive.security.authorization.manager,hive.security.metastore.authorization.manager,hive.security.metastore.authenticator.manager,hive.users.in.admin.role,hive.server2.xsrf.filter.enabled,hive.security.authorization.enabled,hive.server2.authentication.ldap.baseDN,hive.server2.authentication.ldap.url,hive.server2.authentication.ldap.Domain,hive.server2.authentication.ldap.groupDNPattern,hive.server2.authentication.ldap.groupFilter,hive.server2.authentication.ldap.userDNPattern,hive.server2.authentication.ldap.userFilter,hive.server2.authentication.ldap.groupMembershipKey,hive.server2.authentication.ldap.userMembershipKey,hive.server2.authentication.ldap.groupClassKey,hive.server2.authentication.ldap.customLDAPQuery</value>
-    <description>Comma separated list of configuration options which are immutable at runtime</description>
-  </property>
-  <property>
-    <name>hive.conf.hidden.list</name>
-    <value>javax.jdo.option.ConnectionPassword,hive.server2.keystore.password,fs.s3.awsAccessKeyId,fs.s3.awsSecretAccessKey,fs.s3n.awsAccessKeyId,fs.s3n.awsSecretAccessKey,fs.s3a.access.key,fs.s3a.secret.key,fs.s3a.proxy.password</value>
-    <description>Comma separated list of configuration options which should not be read by normal user like passwords</description>
-  </property>
-  <property>
     <name>hive.conf.internal.variable.list</name>
     <value>hive.added.files.path,hive.added.jars.path,hive.added.archives.path</value>
     <description>Comma separated list of variables which are used internally and should not be configurable.</description>
