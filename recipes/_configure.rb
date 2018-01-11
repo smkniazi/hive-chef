@@ -12,6 +12,7 @@ mysql_endpoint = private_recipe_ip("ndb", "mysqld") + ":#{node['ndb']['mysql_por
 directory "#{node['hive2']['logs_dir']}" do
   owner node['hive2']['user']
   group node['hive2']['group']
+  mode "0775"
   action :create
 end
 
@@ -19,7 +20,7 @@ template "#{node['hive2']['base_dir']}/conf/hive-log4j2.properties" do
   source "hive-log4j2.properties.erb"
   owner node['hive2']['user']
   group node['hive2']['group']
-  mode 0655
+  mode "0655"
 end
 
 
