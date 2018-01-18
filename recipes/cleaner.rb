@@ -1,3 +1,5 @@
+include_recipe "java"
+
 # Download Hive cleaner
 package_url = "#{node['hive2']['hive_cleaner']['url']}"
 base_package_filename = File.basename(package_url)
@@ -38,12 +40,15 @@ template "#{node['hive2']['base_dir']}/bin/wiper.sh" do
   mode 0755
 end
 
-
-template "/etc/environment_cleaner" do
-  source "environment_cleaner.erb"
-  owner "root"
-  group "root"
-  mode 0664
+ndb_mgmd_ip = private_recipe_ip("ndb", "mgmd")
+template "#{node['hive2']['base_dir']}/bin/start-hivecleaner.sh" do
+  source "start-hivecleaner.sh.erb"
+  owner node['hops']['hdfs']['user']
+  group node['hops']['group']
+  variables({
+      :mgmd_endpoint => ndb_mgmd_ip
+  })
+  mode 0775
 end
 
 service_name="hivecleaner"
@@ -60,16 +65,11 @@ service service_name do
   action :nothing
 end
 
-ndb_mgmd_ip = private_recipe_ip("ndb", "mgmd")
-
 template systemd_script do
   source "#{service_name}.service.erb"
   owner "root"
   group "root"
   mode 0754
-  variables({
-            :mgmd_endpoint => ndb_mgmd_ip
-           })
   if node['services']['enabled'] == "true"
     notifies :enable, resources(:service => service_name)
   end
