@@ -89,6 +89,10 @@ attribute "hive2/metastore/port",
           :description => "metastore port",
           :type => "string"
 
+attribute "hive2/conf/mapreduce_input_size",
+          :description => "Configure the property: mapreduce.input.fileinputformat.split.minsize - doesn't like units",
+          :type => "string"
+
 attribute "install/dir",
           :description => "Set to a base directory under which we will install.",
           :type => "string"
