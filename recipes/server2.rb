@@ -36,3 +36,8 @@ if node['kagent']['enabled'] == "true"
   end
 end
 
+if node['install']['upgrade'] == "true"
+  kagent_config "#{service_name}" do
+    action :systemd_reload
+  end
+end  
