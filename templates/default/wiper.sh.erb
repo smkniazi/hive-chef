@@ -1,11 +1,11 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 NDB_SCRIPTS=<%= node['ndb']['scripts_dir'] %>
 HADOOP_HOME=<%= node['hops']['base_dir'] %>
 
 # Delete SDSes which are not used by any DBS, TBLS, PARTITION or IDXS entry.
 echo "Deleting SDSes"
-$NDB_SCRIPTS/mysql-client.sh -e "use metastore;
+"$NDB_SCRIPTS"/mysql-client.sh -e "use metastore;
                                 DELETE
                                 FROM SDS
                                 WHERE SD_ID NOT IN (SELECT SD_ID
@@ -22,7 +22,7 @@ $NDB_SCRIPTS/mysql-client.sh -e "use metastore;
 
 # Delete CDSes with no SDS entries that point to them
 echo "Deleting CDSes"
-$NDB_SCRIPTS/mysql-client.sh -e "use metastore;
+"$NDB_SCRIPTS"/mysql-client.sh -e "use metastore;
                                   DELETE c
                                   FROM CDS c LEFT JOIN SDS s
                                   ON c.CD_ID = s.CD_ID
@@ -30,7 +30,7 @@ $NDB_SCRIPTS/mysql-client.sh -e "use metastore;
 
 # Delete SERDESes with no SDS entries that point to them
 echo "Deleting SERDESes"
-$NDB_SCRIPTS/mysql-client.sh -e "use metastore;
+"$NDB_SCRIPTS"/mysql-client.sh -e "use metastore;
                                   DELETE se
                                   FROM SERDES se LEFT JOIN SDS s
                                   ON se.SERDE_ID = s.SERDE_ID
@@ -38,7 +38,7 @@ $NDB_SCRIPTS/mysql-client.sh -e "use metastore;
 
 # Delete SKEWED_STRING_LIST
 echo "Deleting SKEWED_STRING_LIST"
-$NDB_SCRIPTS/mysql-client.sh -e "use metastore;
+"$NDB_SCRIPTS"/mysql-client.sh -e "use metastore;
 				                          DELETE sl
                                   FROM SKEWED_STRING_LIST sl
                                   WHERE sl.STRING_LIST_ID NOT IN (SELECT STRING_LIST_ID_KID
@@ -48,7 +48,7 @@ $NDB_SCRIPTS/mysql-client.sh -e "use metastore;
                                                                FROM SKEWED_VALUES)"
 
 # Deleting indexes without parent table
-$NDB_SCRIPTS/mysql-client.sh -N -e "use metastore;
+"$NDB_SCRIPTS"/mysql-client.sh -N -e "use metastore;
                                     SELECT s.LOCATION
                                     FROM SDS s
                                     WHERE s.SD_ID IN (SELECT t.SD_ID
@@ -64,7 +64,7 @@ do
     skip=false
   else
     echo "Deleting index at $line"
-    $HADOOP_HOME/bin/hdfs dfs -rm -r $line
+    $HADOOP_HOME/bin/hdfs dfs -rm -r "$line"
   fi
 done < "$filename"
 rm /tmp/locations
