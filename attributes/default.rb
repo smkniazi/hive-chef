@@ -5,7 +5,7 @@ include_attribute "kzookeeper"
 
 default['hive2']['user']                    = node['install']['user'].empty? ? "hive" : node['install']['user']
 default['hive2']['group']                   = node['install']['user'].empty? ? node['hops']['group'] : node['install']['user']
-default['hive2']['version']                 = "2.3.0"
+default['hive2']['version']                 = "2.3.0.1"
 default['hive2']['url']                     = "#{node['download_url']}/apache-hive-#{node['hive2']['version']}-bin.tar.gz"
 default['hive2']['port']                    = "9084"
 default['hive2']['portssl']                 = "9085"
@@ -26,8 +26,6 @@ default['hive2']['mysql_connector_checksum'] = "32ddcf6d2613c79595f4f3fda01efb86
 
 default['hive2']['metastore']['port']       = "9083"
 default['hive2']['systemd']                 = "true"
-
-default['hive2']['hopsworks']['port']         = "8080"
 
 default['hive2']['hive_cleaner']['version']   = "0.1.2"
 default['hive2']['hive_cleaner']['url']       = "#{node['download_url']}/hivecleaner/#{node['platform']}/hivecleaner-#{node['hive2']['hive_cleaner']['version']}.tar.gz"
