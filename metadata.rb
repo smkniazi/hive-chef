@@ -69,12 +69,20 @@ attribute "hive2/metastore/private_ips",
           :description => "Set ip addresses",
           :type => "array"
 
+attribute "hive2/metastore/public_ips",
+          :description => "Public ip addresses",
+          :type => "array"
+
 attribute "hive2/default/private_ips",
           :description => "Set ip addresses",
           :type => "array"
 
 attribute "hive2/server2/private_ips",
           :description => "Set ip addresses",
+          :type => "array"
+
+attribute "hive2/server2/public_ips",
+          :description => "Public ip addresses",
           :type => "array"
 
 attribute "hive2/metastore/port",
