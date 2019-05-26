@@ -62,12 +62,19 @@ end
 # http://www.toadworld.com/platforms/oracle/w/wiki/11427.using-mysql-database-as-apache-hive-metastore-database
 #
 
+fqdn = node['fqdn']
+
+if node['install']['localhost'].casecmp?("true")
+  fqdn = "localhost"  
+end
+
 template "#{node['hive2']['base_dir']}/conf/hive-site.xml" do
   source "hive-site.xml.erb"
   owner node['hive2']['user']
   group node['hops']['secure_group']
   mode 0650
   variables({
+    :fqdn => fqdn,
     :private_ip => my_ip,
     :hopsworks_endpoint => hopsworks_endpoint,
     :nn_endpoint => nn_endpoint,
