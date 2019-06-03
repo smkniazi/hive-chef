@@ -15,6 +15,15 @@ for d in tmp_dirs
   end
 end
 
+bash "set_warehouse_storage_type" do
+  user node['hops']['hdfs']['user'] 
+  group node['hops']['group']
+  code <<-EOH
+    #{node['hops']['bin_dir']}/hdfs storagepolicies -setStoragePolicy -path #{node['hive2']['hopsfs_dir']}/warehouse -policy DB
+  EOH
+  action :run
+end
+
 # Create hive user-dir on hdfs
 hops_hdfs_directory "/user/#{node['hive2']['user']}" do
   action :create_as_superuser
@@ -32,9 +41,6 @@ hops_hdfs_directory node['hive2']['scratch_dir'] do
     mode "1777" #scratchdir must be read/write/executable by everyone for SparkSQL user-jobs to write there
     not_if ". #{node['hops']['home']}/sbin/set-env.sh && #{node['hops']['home']}/bin/hdfs dfs -test -d #{node['hive2']['scratch_dir']}"
 end
-
-
-
 
 service_name="hivemetastore"
 
