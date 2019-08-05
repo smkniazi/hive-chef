@@ -43,7 +43,7 @@ hops_hdfs_directory node['hive2']['scratch_dir'] do
 end
 
 #Add the wiper
-template "#{node['hive2']['cleaner']['parent']}/wiper.sh" do
+template "#{node['hive2']['base_dir']}/bin/wiper.sh" do
   source "wiper.sh.erb"
   owner node['hive2']['user']
   group node['hive2']['group']
