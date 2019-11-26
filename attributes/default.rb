@@ -15,6 +15,7 @@ default['hive2']['base_dir']                = node['hive2']['dir'] + "/apache-hi
 default['hive2']['logs_dir']                = node['hive2']['base_dir'] + "/logs"
 default['hive2']['conf_dir']                = node['hive2']['base_dir'] + "/conf"
 default['hive2']['lib_dir']                 = node['hive2']['base_dir'] + "/lib"
+default['hive2']['hopsworks_jars']          = node['hive2']['base_dir'] + "/hopsworks-jars"
 default['hive2']['hopsfs_dir']              = "/apps/hive"
 default['hive2']['scratch_dir']             = "/tmp/hive"
 
@@ -56,7 +57,7 @@ default['tez']['session_per_queue']     = 100
 
 default['hive2']['conf']['mapreduce_input_size']     = "134217728"
 
-default['hive2']['hudi_version']              = "0.5.0-SNAPSHOT"
+default['hive2']['hudi_version']              = "0.5.1-SNAPSHOT"
 default['hive2']['hudi_hadoop_mr_bundle_url']     = "#{node['download_url']}/hudi/#{node['hive2']['hudi_version']}/hudi-hadoop-mr-bundle-#{node['hive2']['hudi_version']}.jar"
 
 default['hive2']['jmx']['prometheus_exporter']['version']  = "0.12.0"
