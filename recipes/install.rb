@@ -39,6 +39,10 @@ group node['kagent']['certs_group'] do
 end
 
 package_url = "#{node['hive2']['url']}"
+if node['install']['enterprise']['install'].casecmp? "true"
+  package_url = "#{node['install']['enterprise']['download_url']}/hive/apache-hive-#{node['hive2']['version']}-bin.tar.gz"
+end
+
 base_package_filename = File.basename(package_url)
 cached_package_filename = "/tmp/#{base_package_filename}"
 
@@ -46,6 +50,8 @@ remote_file cached_package_filename do
   source package_url
   owner "#{node['hive2']['user']}"
   mode "0644"
+  headers get_ee_basic_auth_header()
+  sensitive true
   action :create_if_missing
 end
 
