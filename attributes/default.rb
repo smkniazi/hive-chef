@@ -5,7 +5,7 @@ include_attribute "kzookeeper"
 
 default['hive2']['user']                    = node['install']['user'].empty? ? "hive" : node['install']['user']
 default['hive2']['group']                   = node['install']['user'].empty? ? node['hops']['group'] : node['install']['user']
-default['hive2']['version']                 = "3.0.0.3"
+default['hive2']['version']                 = "3.0.0.4"
 default['hive2']['url']                     = "#{node['download_url']}/apache-hive-#{node['hive2']['version']}-bin.tar.gz"
 default['hive2']['port']                    = "9084"
 default['hive2']['portssl']                 = "9085"
@@ -17,7 +17,7 @@ default['hive2']['conf_dir']                = node['hive2']['base_dir'] + "/conf
 default['hive2']['lib_dir']                 = node['hive2']['base_dir'] + "/lib"
 default['hive2']['hopsworks_jars']          = node['hive2']['base_dir'] + "/hopsworks-jars"
 default['hive2']['consul']                  = node['hive2']['base_dir'] + "/consul"
-default['hive2']['hopsfs_dir']              = "/apps/hive"
+default['hive2']['hopsfs_dir']              = "#{node['hops']['hdfs']['apps_dir']}/hive"
 default['hive2']['scratch_dir']             = "/tmp/hive"
 
 default['hive2']['mysql_user']              = "hive"
@@ -27,8 +27,9 @@ default['hive2']['mysql_connector_url']     = "#{node['download_url']}/mysql-con
 default['hive2']['mysql_connector_checksum'] = "32ddcf6d2613c79595f4f3fda01efb8620ea2bf50df954215c175ebec4cc67b9"
 
 
-default['hive2']['metastore']['port']       = "9083"
-default['hive2']['systemd']                 = "true"
+default['hive2']['metastore']['port']                    = "9083"
+default['hive2']['metastore']['enforce_authority']       = "true"
+default['hive2']['systemd']                              = "true"
 
 default['hive2']['hopsworks']['port']         = "8080"
 
@@ -39,7 +40,7 @@ default['tez']['url']                     = "#{node['download_url']}/apache-tez-
 default['tez']['dir']                     =  node['install']['dir'].empty? ? "/srv" : node['install']['dir']
 default['tez']['home']                    =  node['tez']['dir'] + "/apache-tez-" + node['tez']['version']
 default['tez']['base_dir']                =  node['tez']['dir'] + "/apache-tez"
-default['tez']['hopsfs_dir']              = "/apps/tez"
+default['tez']['hopsfs_dir']              = "#{node['hops']['hdfs']['apps_dir']}/tez"
 default['tez']['conf_dir']                =  node['tez']['base_dir'] + "/conf"
 
 default['slider']['user']                    =  node['install']['user'].empty? ? "slider" : node['install']['user']
