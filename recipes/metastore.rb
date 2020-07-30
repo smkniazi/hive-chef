@@ -73,8 +73,9 @@ end
 
 deps = ""
 if exists_local("ndb", "mysqld")
-  deps = "mysqld.service"
+  deps = "mysqld.service "
 end
+deps += " consul.service "
 
 service_name="hivemetastore"
 case node['platform_family']

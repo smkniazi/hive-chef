@@ -22,8 +22,10 @@ if exists_local("ndb", "mysqld")
   deps = "mysqld.service "
 end  
 if exists_local("hive2", "metastore") || exists_local("hive2", "default")
-  deps += "hivemetastore.service"
+  deps += "hivemetastore.service "
 end
+deps += "consul.service "
+
 service_name="hiveserver2"
 
 case node['platform_family']
